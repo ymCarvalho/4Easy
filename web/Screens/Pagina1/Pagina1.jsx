@@ -7,7 +7,7 @@ export default function Pagina1() {
   
     const voltar = () => {
       // Você pode fazer lógica aqui antes de navegar
-      navigate('/Home');
+      navigate('../Home/Home.jsx');
     };
 
   return (

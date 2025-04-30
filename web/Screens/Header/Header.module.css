@@ -1,0 +1,123 @@
+/* Screens/Header.module.css */
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    background-color: white; /* Usando a cor principal definida no root */
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .logoContainer {
+    flex: 1;
+  }
+  
+  .logo {
+    height: 100px; /* Ajuste conforme necessário */
+    cursor: pointer;
+  }
+  
+  .searchContainer {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .searchBar {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid var(--primary-color);
+    border-radius: 24px;
+    padding: 0.5rem 1rem;
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  .searchIcon {
+    width: 20px;
+    height: 20px;
+    fill: var(--primary-color);
+    margin-right: 0.5rem;
+  }
+  
+  .searchInput {
+    border: none;
+    outline: none;
+    color: black;
+    width: 100%;
+    font-size: 1rem;
+    background: transparent;
+  }
+  
+  .rightSection {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .locationDropdown {
+    margin-right: 1rem;
+  }
+  
+  .locationSelect {
+    background: transparent;
+    border: 1px solid white;
+    color: rgb(0, 0, 0);
+    font: 'Montserrat', sans-serif;
+    font-weight: bold;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .locationSelect option {
+    color: black;
+  }
+  
+  .authButtons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .loginButton, .registerButton {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .loginButton {
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid white;
+  }
+  
+  .registerButton {
+    background: var(--primary-color);
+    color: white;
+  }
+  
+  .menuButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 0.5rem;
+    margin-left: 1rem;
+  }
+  
+  .menuIcon {
+    width: 40px;
+    height: 4px;
+    background: var(--primary-color);
+  }
