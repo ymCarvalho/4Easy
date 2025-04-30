@@ -24,5 +24,4 @@ const Organizador = sequelize.define(
 );
 
 sequelize.sync();
-
 module.exports = Organizador;

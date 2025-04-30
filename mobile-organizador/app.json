@@ -19,10 +19,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.mobileorganizador"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    
+    "plugins": [
+      [
+        "@react-native-mapbox-gl/maps",
+        {
+          "accessToken": "AIzaSyDTQ_WhG5H00O_GeXawyeOMHwVQOryVRTc"
+        }
+      ]
+    ]
   }
 }

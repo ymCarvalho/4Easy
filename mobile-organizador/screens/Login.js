@@ -9,36 +9,50 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import {
+  Montserrat_400Regular,
+  Montserrat_700Bold,
+} from "@expo-google-fonts/montserrat";
 
-export default function AuthScreen() {
-  const [mode, setMode] = useState("login");
+export default function TelaAutenticacao() {
+  const navigation = useNavigation();
+  const [modo, setModo] = useState("login");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  const handleSwitch = (selectedMode: "login" | "cadastro") => {
-    setMode(selectedMode);
-  };
+  const [fontsLoaded] = useFonts({
+    Montserrat_400Regular,
+    Montserrat_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const handleSubmit = async () => {
     const endpoint =
-      mode === "login"
+      modo === "login"
         ? "http://192.168.15.13:3000/login/organizador"
         : "http://192.168.15.13:3000/cadastro/organizador";
-    const payload =
-      mode === "login" ? { email, senha } : { nome, email, senha };
+
+    const dados = modo === "login" ? { email, senha } : { nome, email, senha };
 
     try {
-      const response = await axios.post(endpoint, payload);
-      const msg =
-        response.data.message ||
-        (mode === "login"
+      const resposta = await axios.post(endpoint, dados);
+      const mensagem =
+        resposta.data.message ||
+        (modo === "login"
           ? "Login realizado com sucesso!"
           : "Usuário cadastrado com sucesso!");
-      Alert.alert("Sucesso", msg);
-    } catch (error) {
-      const msg = "Erro na requisição";
-      Alert.alert("Erro", msg);
+
+      navigation.navigate("Home");
+    } catch (erro) {
+      const mensagemErro =
+        erro?.response?.data?.message || "Erro na requisição";
+      Alert.alert("Erro", mensagemErro);
     }
   };
 
@@ -46,24 +60,33 @@ export default function AuthScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.switchContainer}>
         <TouchableOpacity
-          style={styles.switchButton}
-          onPress={() => handleSwitch("login")}
+          style={[
+            styles.switchButton,
+            modo === "login" && styles.activeSwitchButton,
+          ]}
+          onPress={() => setModo("login")}
         >
           <Text
-            style={[styles.switchText, mode === "login" && styles.activeText]}
+            style={[
+              styles.switchText,
+              modo === "login" && styles.activeSwitchText,
+            ]}
           >
             Login
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.switchButton}
-          onPress={() => handleSwitch("cadastro")}
+          style={[
+            styles.switchButton,
+            modo === "cadastro" && styles.activeSwitchButton,
+          ]}
+          onPress={() => setModo("cadastro")}
         >
           <Text
             style={[
               styles.switchText,
-              mode === "cadastro" && styles.activeText,
+              modo === "cadastro" && styles.activeSwitchText,
             ]}
           >
             Cadastro
@@ -71,7 +94,7 @@ export default function AuthScreen() {
         </TouchableOpacity>
       </View>
 
-      {mode === "cadastro" && (
+      {modo === "cadastro" && (
         <TextInput
           style={styles.input}
           placeholder="Nome completo"
@@ -79,7 +102,6 @@ export default function AuthScreen() {
           onChangeText={setNome}
         />
       )}
-
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -88,7 +110,6 @@ export default function AuthScreen() {
         autoCapitalize="none"
         onChangeText={setEmail}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Senha"
@@ -97,9 +118,9 @@ export default function AuthScreen() {
         onChangeText={setSenha}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>
-          {mode === "login" ? "Entrar" : "Cadastrar"}
+      <TouchableOpacity style={styles.botao} onPress={handleSubmit}>
+        <Text style={styles.botaoTexto}>
+          {modo === "login" ? "Entrar" : "Cadastrar"}
         </Text>
       </TouchableOpacity>
     </ScrollView>
@@ -122,38 +143,44 @@ const styles = StyleSheet.create({
   },
   switchButton: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 12,
     alignItems: "center",
+    borderBottomWidth: 2,
+    borderBottomColor: "transparent",
+  },
+  activeSwitchButton: {
+    borderBottomColor: "rgb(65, 105, 225)",
   },
   switchText: {
-    fontSize: 18,
-    color: "#ccc",
+    fontSize: 23,
+    color: "rgb(211, 211, 211)",
+    fontFamily: "Montserrat_400Regular",
   },
-  activeText: {
-    color: "#1400B4",
-    fontWeight: "bold",
-    fontFamily: "montserrat",
+  activeSwitchText: {
+    color: "rgb(65, 105, 225)",
+    fontFamily: "Montserrat_400Regular",
   },
   input: {
     width: "100%",
     padding: 14,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "rgb(211, 211, 211)",
     borderRadius: 12,
     marginBottom: 16,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#F1F8FB",
+    fontFamily: "Montserrat_400Regular",
   },
-  button: {
-    backgroundColor: "#1400B4",
+  botao: {
+    backgroundColor: "rgb(65, 105, 225)",
     padding: 16,
     borderRadius: 12,
     width: "100%",
     alignItems: "center",
     marginTop: 8,
   },
-  buttonText: {
+  botaoTexto: {
     color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 15,
+    fontFamily: "Montserrat_700Bold",
   },
 });
