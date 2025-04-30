@@ -13,6 +13,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -28,6 +36,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400; /* Peso padrão */
 }
 
 h1 {
