@@ -35,8 +35,8 @@ export default function TelaAutenticacao() {
   const handleSubmit = async () => {
     const endpoint =
       modo === "login"
-        ? "http://192.168.15.13:3000/login/organizador"
-        : "http://192.168.15.13:3000/cadastro/organizador";
+        ? "http://192.168.83.147:3000/login/organizador"
+        : "http://192.168.83.147:3000/cadastro/organizador";
 
     const dados = modo === "login" ? { email, senha } : { nome, email, senha };
 

@@ -1,4 +1,3 @@
-// components/ImageSelector.tsx
 import React, { useState } from "react";
 import { View, Button, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";

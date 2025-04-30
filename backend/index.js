@@ -89,15 +89,12 @@ app.get("/eventos", async (req, res) => {
       include: {
         model: Localizacao,
         attributes: [
-          "id",
-          "nomeLocal",
-          "rua",
-          "numero",
-          "complemento",
-          "cep",
-          "bairro",
-          "cidade",
-          "estado",
+          "nome",
+          "descricao",
+          "tipo",
+          "privacidade",
+          "dataInicio",
+          "dataFim",
         ],
       },
     });

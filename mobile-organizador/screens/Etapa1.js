@@ -7,117 +7,120 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import DateTimePicker from 'react-native-date-picker'
+import DateTimePicker from "react-native-date-picker";
 
-const SelectInput = ({ title, value, options, onSelect, placeholder }) => {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Etapa1({ navigation }) {
+  /* parte calendario / hora */
+  const SelectInput = ({ title, value, options, onSelect, placeholder }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <View style={styles.selectContainer}>
-      <Text style={styles.label}>{title}</Text>
-      <TouchableOpacity
-        style={styles.selectButton}
-        onPress={() => setIsOpen(!isOpen)}
-      >
-        <Text style={value ? styles.selectedText : styles.placeholderText}>
-          {value || placeholder}
-        </Text>
-      </TouchableOpacity>
-
-      {isOpen && (
-        <View style={styles.optionsList}>
-          {options.map((option, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.optionItem}
-              onPress={() => {
-                onSelect(option);
-                setIsOpen(false);
-              }}
-            >
-              <Text style={styles.optionText}>{option}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
-    </View>
-  );
-};
-
-const DateTimeInput = ({ title, date, onChangeDate }) => {
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-
-  const formatDateTime = () => {
-    return `${date.toLocaleDateString("pt-BR")} às ${date.toLocaleTimeString(
-      "pt-BR",
-      {
-        hour: "2-digit",
-        minute: "2-digit",
-      }
-    )}`;
-  };
-
-  const handleDateChange = (event, newDate) => {
-    setShowDatePicker(false);
-    if (newDate) {
-      const updatedDate = new Date(newDate);
-      updatedDate.setHours(date.getHours());
-      updatedDate.setMinutes(date.getMinutes());
-      onChangeDate(updatedDate);
-    }
-  };
-
-  const handleTimeChange = (event, newTime) => {
-    setShowTimePicker(false);
-    if (newTime) {
-      const updatedDate = new Date(date);
-      updatedDate.setHours(newTime.getHours());
-      updatedDate.setMinutes(newTime.getMinutes());
-      onChangeDate(updatedDate);
-    }
-  };
-
-  return (
-    <View style={styles.dateTimeContainer}>
-      <Text style={styles.label}>{title}</Text>
-      <View style={styles.dateTimeRow}>
+    return (
+      <View style={styles.selectContainer}>
+        <Text style={styles.label}>{title}</Text>
         <TouchableOpacity
-          style={styles.dateTimeButton}
-          onPress={() => setShowDatePicker(true)}
+          style={styles.selectButton}
+          onPress={() => setIsOpen(!isOpen)}
         >
-          <Text style={styles.dateTimeText}>{formatDateTime()}</Text>
+          <Text style={value ? styles.selectedText : styles.placeholderText}>
+            {value || placeholder}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.dateTimeButton, styles.timeButton]}
-          onPress={() => setShowTimePicker(true)}
-        >
-          <Text style={styles.dateTimeText}>Alterar Hora</Text>
-        </TouchableOpacity>
+
+        {isOpen && (
+          <View style={styles.optionsList}>
+            {options.map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.optionItem}
+                onPress={() => {
+                  onSelect(option);
+                  setIsOpen(false);
+                }}
+              >
+                <Text style={styles.optionText}>{option}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
       </View>
+    );
+  };
 
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display="default"
-          onChange={handleDateChange}
-        />
-      )}
+  const DateTimeInput = ({ title, date, onChangeDate }) => {
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
 
-      {showTimePicker && (
-        <DateTimePicker
-          value={date}
-          mode="time"
-          display="default"
-          onChange={handleTimeChange}
-        />
-      )}
-    </View>
-  );
-};
+    const formatDateTime = () => {
+      return `${date.toLocaleDateString("pt-BR")} às ${date.toLocaleTimeString(
+        "pt-BR",
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+        }
+      )}`;
+    };
 
-const CriarEvento = ({ navigation }) => {
+    const handleDateChange = (event, newDate) => {
+      setShowDatePicker(false);
+      if (newDate) {
+        const updatedDate = new Date(newDate);
+        updatedDate.setHours(date.getHours());
+        updatedDate.setMinutes(date.getMinutes());
+        onChangeDate(updatedDate);
+      }
+    };
+
+    const handleTimeChange = (event, newTime) => {
+      setShowTimePicker(false);
+      if (newTime) {
+        const updatedDate = new Date(date);
+        updatedDate.setHours(newTime.getHours());
+        updatedDate.setMinutes(newTime.getMinutes());
+        onChangeDate(updatedDate);
+      }
+    };
+
+    return (
+      <View style={styles.dateTimeContainer}>
+        <Text style={styles.label}>{title}</Text>
+        <View style={styles.dateTimeRow}>
+          <TouchableOpacity
+            style={styles.dateTimeButton}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text style={styles.dateTimeText}>{formatDateTime()}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.dateTimeButton, styles.timeButton]}
+            onPress={() => setShowTimePicker(true)}
+          >
+            <Text style={styles.dateTimeText}>Alterar Hora</Text>
+          </TouchableOpacity>
+        </View>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
+
+        {showTimePicker && (
+          <DateTimePicker
+            value={date}
+            mode="time"
+            display="default"
+            onChange={handleTimeChange}
+          />
+        )}
+      </View>
+    );
+  };
+
+  /* parte do calendario / hora ^^^^ */
+
   const dataInicio = new Date();
   const dataFim = new Date(dataInicio.getTime() + 60 * 60 * 1000);
 
@@ -203,7 +206,7 @@ const CriarEvento = ({ navigation }) => {
       </TouchableOpacity>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -281,7 +284,6 @@ const styles = StyleSheet.create({
     color: "#AFCBFF",
     fontSize: 16,
   },
-  // DateTimeInput styles (English names)
   dateTimeContainer: {
     marginBottom: 20,
   },
@@ -307,7 +309,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
-  // Main button (Portuguese)
   botaoContinuar: {
     backgroundColor: "#3A86FF",
     padding: 18,
@@ -322,5 +323,3 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-
-export default CriarEvento;
