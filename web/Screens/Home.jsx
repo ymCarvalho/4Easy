@@ -12,12 +12,15 @@ export default function Home() {
 
   return (
 
-    //html
-
-    <div>
-      <h1>Página Home</h1>
-      <button onClick={proxima}>paroxima</button>
-    </div>
+    //html #1400b4-cor principal 
+    <>
+      //html
+      <header>
+        <img src="" alt="" />
+      </header><div>
+        <h1>Página Home</h1>
+        <button onClick={proxima}>proxima</button>
+      </div></>
     
   );
 }
