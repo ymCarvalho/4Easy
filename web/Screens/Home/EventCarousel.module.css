@@ -1,0 +1,64 @@
+/* src/Screens/Home/EventCarousel.module.css */
+.carouselContainer {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .authButtons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .loginBtn, .registerBtn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .loginBtn {
+    background: transparent;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+  
+  .registerBtn {
+    background: #1400b4;
+    color: white;
+  }
+  
+  .eventCard {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .eventDetails {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #666;
+  }
+  
+  /* Estilos do react-slick */
+  .slick-dots {
+    bottom: -25px;
+  }
+  
+  .slick-dots li button:before {
+    color: #1400b4;
+  }

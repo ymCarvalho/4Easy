@@ -2,7 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from "./Home.module.css";
 import Header from "../Header/Header.jsx";
-""
+import EventCarousel from './EventCarousel';
+
 export default function Home() {
 //javascript
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Home() {
 
         <button onClick={proxima} className={styles.button}>Proxima pagina</button>
       </div></>
-    
+      
   );
 }
 

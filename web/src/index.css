@@ -36,7 +36,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
-  font-weight: 400; /* Peso padrão */
+  font-weight: 400; 
+  flex-direction: column;
 }
 
 h1 {

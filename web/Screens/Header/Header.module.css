@@ -4,12 +4,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
-    background-color: white; /* Usando a cor principal definida no root */
+    background-color: rgb(255, 255, 255); /* Usando a cor principal definida no root */
     color: white;
     position: sticky;
     top: 0;
     z-index: 100;
+    gap: 0.4rem;
+    padding: 0.1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
   }
   
   .logoContainer {
@@ -22,26 +25,26 @@
   }
   
   .searchContainer {
-    flex: 2;
+    flex: 5;
     display: flex;
-    justify-content: center;
+    justify-content: left;
   }
   
   .searchBar {
     display: flex;
     align-items: center;
     background: white;
-    border: 1px solid var(--primary-color);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);;
     border-radius: 24px;
     padding: 0.5rem 1rem;
-    width: 80%;
-    max-width: 500px;
+    width: 90%;
+    max-width: 800px;
   }
   
   .searchIcon {
     width: 20px;
     height: 20px;
-    fill: var(--primary-color);
+    fill: black;
     margin-right: 0.5rem;
   }
   
@@ -55,14 +58,15 @@
   }
   
   .rightSection {
-    flex: 1;
+    flex: 0 1 auto;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
   }
   
   .locationDropdown {
+    position: relative;
     margin-right: 1rem;
   }
   
@@ -71,19 +75,32 @@
     border: 1px solid white;
     color: rgb(0, 0, 0);
     font: 'Montserrat', sans-serif;
-    font-weight: bold;
+    font-weight:bolder;
+
     padding: 0.5rem;
     border-radius: 4px;
     cursor: pointer;
   }
   
   .locationSelect option {
-    color: black;
+    color: rgb(0, 0, 0);
+  }
+
+  .dropdownIcon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    fill: rgb(0, 0, 0);
+    pointer-events: none; /* Permite clicar no select através do ícone */
   }
   
   .authButtons {
     display: flex;
     gap: 0.5rem;
+    white-space: nowrap;
   }
   
   .loginButton, .registerButton {
@@ -98,6 +115,46 @@
     background: transparent;
     color: var(--primary-color);
     border: 1px solid white;
+  }
+
+  .locationSelect {
+    appearance: none;
+    background: transparent;
+    border: 1px solid white;
+    color: black;
+    padding: 0.5rem 1rem 0.5rem 0; /* Ajuste no padding */
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 180px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500; /* Peso médio */
+    font-size: 0.95rem;
+    border-left: none; /* Remove borda entre ícone e select */
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    position: relative;
+    left: -1px; /* Alinha com o ícone */
+  }
+
+  .locationDropdown::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border: 1px solid white;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .locationSelect:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .locationSelect:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.2);
   }
   
   .registerButton {
