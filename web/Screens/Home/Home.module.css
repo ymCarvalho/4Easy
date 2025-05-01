@@ -1,24 +1,24 @@
-/* Screens/Home.module.css */
 .container {
-    padding: 2rem;
-    text-align: center;
-  }
-  
-  .title {
-    color: var(--primary-color);
-    margin-bottom: 2rem;
-  }
-  
-  .button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .button:hover {
-    background-color: #0d00a1;
-  }
+  max-width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.carouselWrapper {
+  margin: 30px 0;
+}
+
+.title {
+  color: black;
+  margin-bottom: 20px;
+}
+
+.button {
+  margin-top: 30px;
+  padding: 10px 20px;
+  background-color: #1400b4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

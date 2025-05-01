@@ -1,35 +1,51 @@
-// src/Screens/Home/EventCarousel.jsx
 import React from 'react';
 import Slider from 'react-slick';
 import styles from './EventCarousel.module.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const EventCarousel = () => {
-  // Dados de exemplo (substitua pelos seus eventos)
   const events = [
     {
       id: 1,
-      name: "NOME DO EVENTO",
+      name: "Show de Rock",
       location: "São Paulo",
-      date: "sexta-feira, 12 de Fev às 20:00"
+      date: "12/02 às 20:00"
     },
-    // Adicione mais eventos...
+    {
+      id: 2,
+      name: "Festival de Jazz",
+      location: "Rio de Janeiro", 
+      date: "15/02 às 19:30"
+    },
+    {
+      id: 3,
+      name: "Teatro Nacional",
+      location: "Belo Horizonte",
+      date: "18/02 às 21:00"
+    }
   ];
 
-  // Configurações do carrossel
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 3,
     slidesToScroll: 1,
-    arrows: false,
-    responsive: [ // Configurações de responsividade
+    centerMode: true,
+    centerPadding: '0',
+    responsive: [
       {
-        breakpoint: 768, // Para telas menores que 768px
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: 768,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: false // Opcional: esconde dots em mobile
+          arrows: false
         }
       }
     ]
@@ -37,21 +53,15 @@ const EventCarousel = () => {
 
   return (
     <div className={styles.carouselContainer}>
-      <div className={styles.header}>
-        <h2>Select one um local</h2>
-        <div className={styles.authButtons}>
-          <button className={styles.loginBtn}>LOGIN</button>
-          <button className={styles.registerBtn}>CADASTRE-SE</button>
-        </div>
-      </div>
-      
       <Slider {...settings}>
         {events.map(event => (
-          <div key={event.id} className={styles.eventCard}>
-            <h3>{event.name}</h3>
-            <div className={styles.eventDetails}>
-              <span>📍 {event.location}</span>
-              <span>📅 {event.date}</span>
+          <div key={event.id} className={styles.slide}>
+            <div className={styles.eventCard}>
+              <h3>{event.name}</h3>
+              <div className={styles.eventDetails}>
+                <span>📍 {event.location}</span>
+                <span>📅 {event.date}</span>
+              </div>
             </div>
           </div>
         ))}

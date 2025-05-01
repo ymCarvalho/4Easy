@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import styles from "./Home.module.css";
+import Header from "../Header/Header.jsx";
 
 export default function Pagina1() {
 //javascript
@@ -13,7 +15,7 @@ export default function Pagina1() {
   return (
 
     //html
-
+     
     <div>
       <h1>Pagina1</h1>
       <button onClick={voltar}>Voltar</button>

@@ -19,10 +19,17 @@ export default function Home() {
     <>
       <Header/>
       <div className={styles.container}>
-        <h1 className={styles.title}>Página Home</h1>
+        <h1 className={styles.title}>Eventos Disponíveis</h1>
+        
+        {/* Adicione o carrossel aqui */}
+        <div className={styles.carouselWrapper}>
+          <EventCarousel />
+        </div>
 
-        <button onClick={proxima} className={styles.button}>Proxima pagina</button>
-      </div></>
+        <button onClick={proxima} className={styles.button}>
+          Próxima página
+        </button>
+        </div></>
       
   );
 }
