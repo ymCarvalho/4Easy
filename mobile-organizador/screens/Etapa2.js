@@ -13,21 +13,17 @@ import {
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { MaterialIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default async function Mapa({ navigation, route }) {
-  const { dadosEvento } = route.params;
+export default function Mapa({ navigation, route }) {
   const [region, setRegion] = useState({
     latitude: -23.5505,
     longitude: -46.6333,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-
-  const dadosSalvos = await AsyncStorage.getItem("@evento");
-
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -35,12 +31,11 @@ export default async function Mapa({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const mapRef = useRef(null);
 
-  const [evento, setEvento] = useState(" ");
   const handleSearch = async () => {
     if (searchText.length < 3) {
       setResults([]);
       return;
-    } 
+    }
 
     setLoading(true);
     try {
@@ -73,25 +68,34 @@ export default async function Mapa({ navigation, route }) {
     mapRef.current?.animateToRegion(newRegion, 1000);
   };
 
-  const confirmLocation = () => {
+  const confirmLocation = async () => {
     if (!selectedPlace) {
       Alert.alert("Atenção", "Selecione um local no mapa");
       return;
     }
+    try {
+      const dadosEventoStr = await AsyncStorage.getItem("@evento");
+      const dadosEvento = dadosEventoStr ? JSON.parse(dadosEventoStr) : {};
 
-    const dadosAtualizados = {
-      ...dadosEvento,
-      localizacao: {
-        latitude: selectedPlace.geometry.lat,
-        longitude: selectedPlace.geometry.lng,
-        endereco: selectedPlace.formatted,
-        cidade: selectedPlace.components.city || selectedPlace.components.town,
-        estado: selectedPlace.components.state,
-        cep: selectedPlace.components.postcode,
-      },
-    };
+      const dadosAtualizados = {
+        ...dadosEvento,
+        localizacao: {
+          latitude: selectedPlace.geometry.lat,
+          longitude: selectedPlace.geometry.lng,
+          endereco: selectedPlace.formatted,
+          cidade:
+            selectedPlace.components.city || selectedPlace.components.town,
+          estado: selectedPlace.components.state,
+          cep: selectedPlace.components.postcode,
+        },
+      };
 
-    navigation.navigate("Etapa3", { dadosEvento: dadosAtualizados });
+      await AsyncStorage.setItem("@evento", JSON.stringify(dadosAtualizados));
+      navigation.navigate("Etapa3");
+    } catch (error) {
+      console.error("Erro ao salvar dados da Etapa 1:", error);
+      Alert.alert("Erro", "Não foi possível salvar os dados");
+    }
   };
 
   return (
