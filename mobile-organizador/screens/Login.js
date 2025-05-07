@@ -16,7 +16,7 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 
-export default function TelaAutenticacao() {
+export default function Login() {
   const navigation = useNavigation();
   const [modo, setModo] = useState("login");
   const [nome, setNome] = useState("");
@@ -35,8 +35,8 @@ export default function TelaAutenticacao() {
   const handleSubmit = async () => {
     const endpoint =
       modo === "login"
-        ? "http://192.168.83.147:3000/login/organizador"
-        : "http://192.168.83.147:3000/cadastro/organizador";
+        ? "http://192.168.167.147:3000/login/organizador"
+        : "http://192.168.167.147:3000/cadastro/organizador";
 
     const dados = modo === "login" ? { email, senha } : { nome, email, senha };
 

@@ -13,14 +13,19 @@ import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 
 export default function ImagensEvento({ navigation, route }) {
+  const { dadosEvento } = route.params;
   const [fotoCapa, setFotoCapa] = useState(null);
   const [fotos, setFotos] = useState([]);
 
   const escolherImagem = async (callback) => {
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permissão necessária', 'Precisamos acessar sua galeria para selecionar fotos');
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissão necessária",
+          "Precisamos acessar sua galeria para selecionar fotos"
+        );
         return;
       }
 
@@ -52,13 +57,24 @@ export default function ImagensEvento({ navigation, route }) {
     setFotos(fotos.filter((_, i) => i !== index));
   };
 
+  const avancar = () => {
+    const dadosAtualizados = {
+      ...dadosEvento,
+      fotos: {
+        capa: fotoCapa,
+        galeria: fotos,
+      },
+    };
+    navigation.navigate("Etapa4", { dadosEvento: dadosAtualizados });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.titulo}>Adicionar Fotos</Text>
-      
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Foto de Capa</Text>
-        
+
         <TouchableOpacity
           style={styles.capaContainer}
           onPress={() => escolherImagem(setFotoCapa)}
@@ -68,20 +84,20 @@ export default function ImagensEvento({ navigation, route }) {
           ) : (
             <View style={styles.placeholderContainer}>
               <MaterialIcons name="add-a-photo" size={32} color="#888" />
-              <Text style={styles.placeholderText}>Selecionar Foto de Capa</Text>
+              <Text style={styles.placeholderText}>
+                Selecionar Foto de Capa
+              </Text>
             </View>
           )}
         </TouchableOpacity>
       </View>
 
-      {/* Seção Galeria */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Galeria de Fotos</Text>
           <Text style={styles.limitText}>{fotos.length}/10 fotos</Text>
         </View>
-        <Text style={styles.sectionSubtitle}>fotos</Text>
-        
+
         <FlatList
           data={fotos}
           horizontal
@@ -89,7 +105,7 @@ export default function ImagensEvento({ navigation, route }) {
           renderItem={({ item, index }) => (
             <View style={styles.fotoItemContainer}>
               <Image source={{ uri: item }} style={styles.fotoItem} />
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.removeButton}
                 onPress={() => removerFoto(index)}
               >
@@ -111,11 +127,12 @@ export default function ImagensEvento({ navigation, route }) {
         />
       </View>
 
-      <TouchableOpacity 
-        style={[styles.button, !fotoCapa && styles.buttonDisabled]} 
+      <TouchableOpacity
+        style={[styles.button, !fotoCapa && styles.buttonDisabled]}
+        onPress={avancar}
+        disabled={!fotoCapa}
       >
         <Text style={styles.buttonText}>Próximo</Text>
-        <MaterialIcons name="arrow-forward" size={20} color="white" />
       </TouchableOpacity>
     </ScrollView>
   );
@@ -125,58 +142,53 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: "#f8f9fa",
   },
   titulo: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   section: {
     marginBottom: 30,
   },
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-  },
-  sectionSubtitle: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 15,
+    fontWeight: "600",
+    color: "#333",
   },
   limitText: {
     fontSize: 14,
-    color: '#6200ee',
+    color: "#6200ee",
   },
   capaContainer: {
     height: 200,
     borderRadius: 12,
-    backgroundColor: '#f1f1f1',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    backgroundColor: "#f1f1f1",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
   },
   capaImagem: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   placeholderContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   placeholderText: {
-    color: '#888',
+    color: "#888",
     marginTop: 10,
     fontSize: 16,
   },
@@ -184,20 +196,20 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   fotoItemContainer: {
-    position: 'relative',
+    position: "relative",
     marginRight: 15,
   },
   fotoItem: {
     width: 120,
     height: 120,
     borderRadius: 8,
-    backgroundColor: '#f1f1f1',
+    backgroundColor: "#f1f1f1",
   },
   removeButton: {
-    position: 'absolute',
+    position: "absolute",
     top: -8,
     right: -8,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
   },
   adicionarBotao: {
@@ -205,29 +217,28 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#6200ee',
-    borderStyle: 'dashed',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f9f9f9',
+    borderColor: "#6200ee",
+    borderStyle: "dashed",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f9f9f9",
   },
   button: {
-    flexDirection: 'row',
-    backgroundColor: '#6200ee',
+    flexDirection: "row",
+    backgroundColor: "#6200ee",
     padding: 16,
     borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 20,
     elevation: 3,
   },
   buttonDisabled: {
-    backgroundColor: '#cccccc',
+    backgroundColor: "#cccccc",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: '600',
-    marginRight: 10,
+    fontWeight: "600",
   },
 });

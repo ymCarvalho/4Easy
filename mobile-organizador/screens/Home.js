@@ -1,8 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Home as Casa, MessageCircle, Plus, BarChart2, User } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons, Feather, AntDesign } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -54,10 +54,10 @@ const Tabs = () => {
         tabBarLabel: () => null,
         tabBarIcon: ({ color, size }) => {
           if (route.name === "Home") {
-            return <Casa color={color} size={24} />;
+            return <MaterialIcons name="home" color={color} size={24} />;
           }
           if (route.name === "Chat") {
-            return <MessageCircle color={color} size={24} />;
+            return <MaterialIcons name="chat" color={color} size={24} />;
           }
           if (route.name === "Eventos") {
             return (
@@ -65,15 +65,15 @@ const Tabs = () => {
                 style={estilos.botaoCriar}
                 onPress={() => navigation.navigate("Etapa1")}
               >
-                <Plus color="white" size={28} />
+                <Feather name="plus" color="white" size={28} />
               </TouchableOpacity>
             );
           }
           if (route.name === "Gráfico") {
-            return <BarChart2 color={color} size={24} />;
+            return <AntDesign name="barschart" color={color} size={24} />;
           }
           if (route.name === "Perfil") {
-            return <User color={color} size={24} />;
+            return <MaterialIcons name="person" color={color} size={24} />;
           }
         },
       })}

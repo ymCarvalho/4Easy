@@ -1,46 +1,61 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db");
+const Evento = require("./Evento");
 
 const Ingresso = sequelize.define(
   "Ingresso",
   {
-    id: {
+    ingressoId: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
     },
     eventoId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Eventos",
-        key: "id",
+        model: "Evento",
+        key: "eventoId",
       },
     },
     nome: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
     descricao: {
-      type: DataTypes.STRING,
-    },
-    quantidade: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(255),
     },
     preco: {
       type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
     },
-    vendas_ate: {
+    quantidade: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    dataLimite: {
       type: DataTypes.DATE,
+      allowNull: false,
     },
     qrCode: {
       type: DataTypes.TEXT,
     },
   },
+
   {
-    tableName: "Ingressos",
+    tableName: "Ingresso",
     timestamps: true,
   }
 );
 
-sequelize.sync();
+Ingresso.belongsTo(Evento, {
+  foreignKey: {
+    name: "eventoId",
+  },
+});
+
+Evento.hasMany(Ingresso, {
+  foreignKey: "eventoId",
+});
+
 module.exports = Ingresso;

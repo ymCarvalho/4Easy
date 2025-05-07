@@ -1,14 +1,18 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
+const sequelize = require("./db");
+
 const Convidado = require("./models/Convidado");
 const Organizador = require("./models/Organizador");
 const Evento = require("./models/Evento");
 const Localizacao = require("./models/Localizacao");
-
-const PORT = process.env.PORT || 3000;
+const Midia = require("./models/Midia");
+const Ingresso = require("./models/Ingresso");
+app.use(cors());
 app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-//lembrar colocar o bcrypt
 app.post("/cadastro/organizador", async (req, res) => {
   const { nome, email, senha } = req.body;
 
@@ -75,46 +79,91 @@ app.post("/login/convidado", async (req, res) => {
 
 app.post("/eventos", async (req, res) => {
   try {
-    const novoEvento = await Evento.create(req.body);
-    res.status(201).json(novoEvento);
-  } catch (error) {
-    console.error("Erro ao criar evento:", error);
-    res.status(500).json({ erro: "Erro ao criar evento" });
-  }
-});
+    const {
+      nome,
+      descricao,
+      tipo,
+      privacidade,
+      dataInicio,
+      dataFim,
+      localizacao,
+      fotos,
+      ingressos,
+    } = req.body;
 
-app.get("/eventos", async (req, res) => {
-  try {
-    const eventos = await Evento.findAll({
-      include: {
-        model: Localizacao,
-        attributes: [
-          "nome",
-          "descricao",
-          "tipo",
-          "privacidade",
-          "dataInicio",
-          "dataFim",
-        ],
+    const [localizacaoCriada] = await Localizacao.findOrCreate({
+      where: {
+        latitude: localizacao.latitude,
+        longitude: localizacao.longitude,
+        endereco: localizacao.endereco,
+        cidade: localizacao.cidade,
+        estado: localizacao.estado,
+      },
+      defaults: {
+        endereco: localizacao.endereco,
+        cidade: localizacao.cidade,
+        estado: localizacao.estado,
+        complemento: localizacao.complemento || null,
+        cep: localizacao.cep,
+        latitude: localizacao.latitude,
+        longitude: localizacao.longitude,
       },
     });
-    res.status(200).json(eventos);
+
+    console.log("Localização criada:", localizacaoCriada.localizacaoId);
+
+    const evento = await Evento.create({
+      NomeEvento: nome,
+      DescEvento: descricao,
+      TipoEvento: tipo,
+      PrivacidadeEvento: privacidade,
+      DataInicio: dataInicio,
+      HoraInicio: datafim,
+      localizacaoId: localizacaoCriada.localizacaoId,
+    });
+
+    if (fotos && fotos.galeria) {
+      await Promise.all(
+        fotos.galeria.map((url) =>
+          Midia.create({
+            eventoId: evento.eventoId,
+            tipo: "imagem",
+            url: url,
+          })
+        )
+      );
+    }
+
+    if (ingressos && ingressos.length > 0) {
+      await Promise.all(
+        ingressos.map((ingresso) =>
+          Ingresso.create({
+            eventoId: evento.eventoId,
+            nome: ingresso.nome,
+            descricao: ingresso.descricao,
+            preco: ingresso.preco,
+            quantidade: ingresso.quantidade,
+            dataLimite: ingresso.dataLimite,
+          })
+        )
+      );
+    }
+
+    res.status(201).json({
+      success: true,
+      eventoId: evento.id,
+    });
   } catch (error) {
-    console.error("Erro ao buscar eventos:", error);
-    res.status(500).json({ error: "Erro ao buscar eventos" });
+    console.error("Erro ao criar evento completo:", error);
+    res.status(500).json({
+      success: false,
+      error: "Erro ao criar evento",
+    });
   }
 });
 
-app.post("/localizacao", async (req, res) => {
-  try {
-    const novaLoc = await Localizacao.create(req.body);
-    res.status(201).json(novaLoc);
-  } catch (error) {
-    console.error("Erro ao criar localização:", error);
-    res.status(500).send("Erro ao criar localização");
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Servidor rodando porta: ${PORT}`);
+sequelize.sync().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta: ${PORT}`);
+  });
 });

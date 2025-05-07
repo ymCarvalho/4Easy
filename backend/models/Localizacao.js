@@ -1,48 +1,46 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db");
+
 const Localizacao = sequelize.define(
   "Localizacao",
   {
-    id: {
+    localizacaoId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    nomeLocal: {
-      type: DataTypes.STRING,
-    },
-    rua: {
-      type: DataTypes.STRING,
-    },
-    numero: {
-      type: DataTypes.STRING,
-    },
-    complemento: {
-      type: DataTypes.STRING,
-    },
-    bairro: {
-      type: DataTypes.STRING,
+
+    endereco: {
+      type: DataTypes.STRING(200),
+      allowNull: false,
     },
     cidade: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
     },
     estado: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(2),
     },
     cep: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(10),
     },
+    complemento: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+
     latitude: {
       type: DataTypes.DECIMAL(10, 8),
+      allowNull: true,
     },
     longitude: {
       type: DataTypes.DECIMAL(11, 8),
+      allowNull: true,
     },
   },
   {
     tableName: "Localizacao",
-    timestamps: false,
+    timestamps: true,
   }
 );
-sequelize.sync();
+
 module.exports = Localizacao;

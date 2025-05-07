@@ -5,49 +5,67 @@ const Localizacao = require("./Localizacao");
 const Evento = sequelize.define(
   "Evento",
   {
-    id: {
+    eventoId: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
+    },
+
+    localizacaoId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Localizacao",
+        key: "localizacaoId",
+      },
     },
     NomeEvento: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
     DescEvento: {
       type: DataTypes.STRING(500),
+      allowNull: true,
     },
     TipoEvento: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      defaultValue: "Outro",
     },
     PrivacidadeEvento: {
       type: DataTypes.STRING(20),
+      allowNull: false,
+      defaultValue: "Público",
     },
-    dataInicio: {
+    DataInicio: {
       type: DataTypes.DATEONLY,
+      allowNull: false,
     },
-    horaInicio: {
+    HoraInicio: {
       type: DataTypes.TIME,
+      allowNull: true,
     },
-    dataFim: {
+    DataFim: {
       type: DataTypes.DATEONLY,
+      allowNull: true,
     },
-    horaFim: {
+    HoraFim: {
       type: DataTypes.TIME,
-    },
-    localizacaoId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Localizacao",
-        key: "id",
-      },
+      allowNull: true,
     },
   },
   {
     tableName: "Evento",
-    timestamps: false,
+    timestamps: true,
   }
 );
-Evento.belongsTo(Localizacao, { foreignKey: "localizacaoId" });
 
-sequelize.sync();
+Evento.belongsTo(Localizacao, {
+  foreignKey: {
+    name: "localizacaoId",
+  },
+});
+Localizacao.hasMany(Evento, {
+  foreignKey: "localizacaoId",
+});
 module.exports = Evento;

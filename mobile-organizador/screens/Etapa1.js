@@ -6,11 +6,30 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  Alert,
 } from "react-native";
-import DateTimePicker from "react-native-date-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Etapa1({ navigation }) {
-  /* parte calendario / hora */
+  const [evento, setEvento] = useState({
+    nome: "",
+    descricao: "",
+    tipo: "",
+    privacidade: "Público",
+    dataInicio: new Date(),
+    dataFim: new Date(Date.now() + 3600000), // +1 hora
+  });
+
+  const tiposEvento = [
+    "Festa",
+    "Conferência",
+    "Workshop",
+    "Encontro",
+    "Lançamento",
+  ];
+  const opcoesPrivacidade = ["Público", "Privado"];
+
   const SelectInput = ({ title, value, options, onSelect, placeholder }) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -47,10 +66,22 @@ export default function Etapa1({ navigation }) {
   };
 
   const DateTimeInput = ({ title, date, onChangeDate }) => {
-    const [showDatePicker, setShowDatePicker] = useState(false);
-    const [showTimePicker, setShowTimePicker] = useState(false);
+    const [showPicker, setShowPicker] = useState(false);
+    const [mode, setMode] = useState("date");
 
-    const formatDateTime = () => {
+    const showMode = (currentMode) => {
+      setShowPicker(true);
+      setMode(currentMode);
+    };
+
+    const onChange = (event, selectedDate) => {
+      setShowPicker(false);
+      if (selectedDate) {
+        onChangeDate(selectedDate);
+      }
+    };
+
+    const formatDate = (date) => {
       return `${date.toLocaleDateString("pt-BR")} às ${date.toLocaleTimeString(
         "pt-BR",
         {
@@ -60,90 +91,60 @@ export default function Etapa1({ navigation }) {
       )}`;
     };
 
-    const handleDateChange = (event, newDate) => {
-      setShowDatePicker(false);
-      if (newDate) {
-        const updatedDate = new Date(newDate);
-        updatedDate.setHours(date.getHours());
-        updatedDate.setMinutes(date.getMinutes());
-        onChangeDate(updatedDate);
-      }
-    };
-
-    const handleTimeChange = (event, newTime) => {
-      setShowTimePicker(false);
-      if (newTime) {
-        const updatedDate = new Date(date);
-        updatedDate.setHours(newTime.getHours());
-        updatedDate.setMinutes(newTime.getMinutes());
-        onChangeDate(updatedDate);
-      }
-    };
-
     return (
       <View style={styles.dateTimeContainer}>
         <Text style={styles.label}>{title}</Text>
         <View style={styles.dateTimeRow}>
           <TouchableOpacity
             style={styles.dateTimeButton}
-            onPress={() => setShowDatePicker(true)}
+            onPress={() => showMode("date")}
           >
-            <Text style={styles.dateTimeText}>{formatDateTime()}</Text>
+            <Text style={styles.dateTimeText}>{formatDate(date)}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.dateTimeButton, styles.timeButton]}
-            onPress={() => setShowTimePicker(true)}
+            onPress={() => showMode("time")}
           >
             <Text style={styles.dateTimeText}>Alterar Hora</Text>
           </TouchableOpacity>
         </View>
 
-        {showDatePicker && (
+        {showPicker && (
           <DateTimePicker
             value={date}
-            mode="date"
+            mode={mode}
             display="default"
-            onChange={handleDateChange}
-          />
-        )}
-
-        {showTimePicker && (
-          <DateTimePicker
-            value={date}
-            mode="time"
-            display="default"
-            onChange={handleTimeChange}
+            onChange={onChange}
           />
         )}
       </View>
     );
   };
 
-  /* parte do calendario / hora ^^^^ */
+  const avancar = async () => {
+    console.log("Dados a serem salvos:", evento);
 
-  const dataInicio = new Date();
-  const dataFim = new Date(dataInicio.getTime() + 60 * 60 * 1000);
+    if (
+      !evento.nome ||
+      !evento.descricao ||
+      !evento.tipo ||
+      !evento.privacidade
+    ) {
+      Alert.alert("Atenção", "Preencha todos os campos obrigatórios");
+      return;
+    }
 
-  const [evento, setEvento] = useState({
-    nome: "",
-    descricao: "",
-    tipo: "",
-    privacidade: "",
-    dataInicio: dataInicio,
-    dataFim: dataFim,
-  });
+    try {
+      await AsyncStorage.setItem("@evento", JSON.stringify(evento));
+      navigation.navigate("Etapa2");
 
-  const tiposEvento = [
-    "Festa",
-    "Conferência",
-    "Workshop",
-    "Encontro",
-    "Lançamento",
-  ];
-  const opcoesPrivacidade = ["Público", "Privado"];
-
-  const avancar = () => {
-    navigation.navigate("Etapa2", { dadosEvento: evento });
+      const dadosSalvos = await AsyncStorage.getItem("@evento");
+      console.log("Dados salvos no AsyncStorage:", JSON.parse(dadosSalvos));
+    
+    } catch (error) {
+      console.error("Erro ao salvar dados da Etapa 1:", error);
+      Alert.alert("Erro", "Não foi possível salvar os dados");
+    }
   };
 
   return (

@@ -1,35 +1,47 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db");
 const Evento = require("./Evento");
+const Midia = sequelize.define(
+  "Midia",
+  {
+    midiaId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
 
-const Midia = sequelize.define("Midia", {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  eventoId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: "Evento",
-      key: "id",
+    eventoId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Evento",
+        key: "eventoId",
+      },
+    },
+    url: {
+      type: DataTypes.STRING(500),
+      allowNull: false,
+    },
+    tipo: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      defaultValue: "galeria",
     },
   },
-  url: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  {
+    tableName: "Midia",
+    timestamps: true,
+  }
+);
+
+Midia.belongsTo(Evento, {
+  foreignKey: {
+    name: "eventoId",
   },
-  tipo: {
-    type: DataTypes.ENUM("capa", "galeria"),
-    allowNull: false,
-  },
-}, {
-  tableName: "Midia",
-  timestamps: false,
 });
 
-Evento.hasMany(Midia, { foreignKey: "eventoId" });
-Midia.belongsTo(Evento, { foreignKey: "eventoId" });
+Evento.hasMany(Midia, {
+  foreignKey: "eventoId",
+});
 
 module.exports = Midia;

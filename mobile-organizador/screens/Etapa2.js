@@ -8,40 +8,54 @@ import {
   TouchableOpacity,
   Modal,
   Dimensions,
-  Image,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
 
-export default function Mapa({ navigation }) {
+export default async function Mapa({ navigation, route }) {
+  const { dadosEvento } = route.params;
   const [region, setRegion] = useState({
     latitude: -23.5505,
     longitude: -46.6333,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
   });
+
+  const dadosSalvos = await AsyncStorage.getItem("@evento");
+
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [loading, setLoading] = useState(false);
   const mapRef = useRef(null);
 
+  const [evento, setEvento] = useState(" ");
   const handleSearch = async () => {
     if (searchText.length < 3) {
       setResults([]);
       return;
-    }
+    } 
 
+    setLoading(true);
     try {
       const response = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${searchText}&key=f4e1b5352e5c4b62a81c7121891d3f76`
+        `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+          searchText
+        )}&key=f4e1b5352e5c4b62a81c7121891d3f76`
       );
       const data = await response.json();
       setResults(data.results || []);
     } catch (error) {
       console.log("Erro na busca:", error);
+      Alert.alert("Erro", "Não foi possível buscar o endereço");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,13 +70,28 @@ export default function Mapa({ navigation }) {
     setSearchText(item.formatted);
     setSelectedPlace(item);
     setResults([]);
-    mapRef.current.animateToRegion(newRegion, 1000);
-    setShowConfirmation(true);
+    mapRef.current?.animateToRegion(newRegion, 1000);
   };
 
   const confirmLocation = () => {
-    setShowConfirmation(false);
-    navigation.navigate("Etapa3", { localizacao: region });
+    if (!selectedPlace) {
+      Alert.alert("Atenção", "Selecione um local no mapa");
+      return;
+    }
+
+    const dadosAtualizados = {
+      ...dadosEvento,
+      localizacao: {
+        latitude: selectedPlace.geometry.lat,
+        longitude: selectedPlace.geometry.lng,
+        endereco: selectedPlace.formatted,
+        cidade: selectedPlace.components.city || selectedPlace.components.town,
+        estado: selectedPlace.components.state,
+        cep: selectedPlace.components.postcode,
+      },
+    };
+
+    navigation.navigate("Etapa3", { dadosEvento: dadosAtualizados });
   };
 
   return (
@@ -72,12 +101,29 @@ export default function Mapa({ navigation }) {
         style={styles.map}
         region={region}
         showsUserLocation={true}
+        onPress={(e) => {
+          setSelectedPlace({
+            geometry: {
+              lat: e.nativeEvent.coordinate.latitude,
+              lng: e.nativeEvent.coordinate.longitude,
+            },
+            formatted: "Local selecionado no mapa",
+            components: {},
+          });
+        }}
       >
-        <Marker coordinate={region}>
-          <View style={styles.marker}>
-            <MaterialIcons name="location-on" size={32} color="#3F51B5" />
-          </View>
-        </Marker>
+        {selectedPlace && (
+          <Marker
+            coordinate={{
+              latitude: selectedPlace.geometry.lat,
+              longitude: selectedPlace.geometry.lng,
+            }}
+          >
+            <View style={styles.marker}>
+              <MaterialIcons name="location-on" size={32} color="#3F51B5" />
+            </View>
+          </Marker>
+        )}
       </MapView>
 
       <View style={styles.searchContainer}>
@@ -96,6 +142,7 @@ export default function Mapa({ navigation }) {
           onSubmitEditing={handleSearch}
           returnKeyType="search"
         />
+        {loading && <ActivityIndicator size="small" color="#3F51B5" />}
       </View>
 
       {results.length > 0 && (
@@ -145,14 +192,16 @@ export default function Mapa({ navigation }) {
                 style={[styles.modalButton, styles.confirmButton]}
                 onPress={confirmLocation}
               >
-                <Text style={styles.buttonText}>Confirmar</Text>
+                <Text style={[styles.buttonText, { color: "white" }]}>
+                  Confirmar
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </Modal>
 
-      {selectedPlace && !showConfirmation && (
+      {selectedPlace && (
         <TouchableOpacity
           style={styles.floatingButton}
           onPress={() => setShowConfirmation(true)}
