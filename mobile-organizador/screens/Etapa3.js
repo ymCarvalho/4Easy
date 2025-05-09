@@ -11,9 +11,9 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function ImagensEvento({ navigation, route }) {
-  const { dadosEvento } = route.params;
+export default function Etapa3({ navigation }) {
   const [fotoCapa, setFotoCapa] = useState(null);
   const [fotos, setFotos] = useState([]);
 
@@ -57,7 +57,10 @@ export default function ImagensEvento({ navigation, route }) {
     setFotos(fotos.filter((_, i) => i !== index));
   };
 
-  const avancar = () => {
+  const avancar = async () => {
+    const dadosEventoString = await AsyncStorage.getItem("@evento");
+    const dadosEvento = dadosEventoString ? JSON.parse(dadosEventoString) : {};
+
     const dadosAtualizados = {
       ...dadosEvento,
       fotos: {
@@ -65,7 +68,11 @@ export default function ImagensEvento({ navigation, route }) {
         galeria: fotos,
       },
     };
-    navigation.navigate("Etapa4", { dadosEvento: dadosAtualizados });
+    await AsyncStorage.setItem("@evento", JSON.stringify(dadosAtualizados));
+    navigation.navigate("Etapa4");
+
+    const dadosSalvos = await AsyncStorage.getItem("@evento");
+    console.log("Dados salvos no AsyncStorage:", JSON.parse(dadosSalvos));
   };
 
   return (

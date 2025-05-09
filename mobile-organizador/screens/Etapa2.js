@@ -74,8 +74,10 @@ export default function Mapa({ navigation, route }) {
       return;
     }
     try {
-      const dadosEventoStr = await AsyncStorage.getItem("@evento");
-      const dadosEvento = dadosEventoStr ? JSON.parse(dadosEventoStr) : {};
+      const dadosEventoString = await AsyncStorage.getItem("@evento");
+      const dadosEvento = dadosEventoString
+        ? JSON.parse(dadosEventoString)
+        : {};
 
       const dadosAtualizados = {
         ...dadosEvento,
@@ -92,6 +94,9 @@ export default function Mapa({ navigation, route }) {
 
       await AsyncStorage.setItem("@evento", JSON.stringify(dadosAtualizados));
       navigation.navigate("Etapa3");
+
+      const dadosSalvos = await AsyncStorage.getItem("@evento");
+      console.log("Dados salvos no AsyncStorage:", JSON.parse(dadosSalvos));
     } catch (error) {
       console.error("Erro ao salvar dados da Etapa 1:", error);
       Alert.alert("Erro", "Não foi possível salvar os dados");

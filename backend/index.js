@@ -96,13 +96,13 @@ app.post("/eventos", async (req, res) => {
         latitude: localizacao.latitude,
         longitude: localizacao.longitude,
         endereco: localizacao.endereco,
-        cidade: localizacao.cidade,
-        estado: localizacao.estado,
+        cidade: localizacao.cidade || null,
+        estado: localizacao.estado || null,
       },
       defaults: {
         endereco: localizacao.endereco,
-        cidade: localizacao.cidade,
-        estado: localizacao.estado,
+        cidade: localizacao.cidade || null,
+        estado: localizacao.estado || null,
         complemento: localizacao.complemento || null,
         cep: localizacao.cep,
         latitude: localizacao.latitude,
@@ -118,7 +118,7 @@ app.post("/eventos", async (req, res) => {
       TipoEvento: tipo,
       PrivacidadeEvento: privacidade,
       DataInicio: dataInicio,
-      HoraInicio: datafim,
+      DataFim: dataFim,
       localizacaoId: localizacaoCriada.localizacaoId,
     });
 
@@ -151,7 +151,7 @@ app.post("/eventos", async (req, res) => {
 
     res.status(201).json({
       success: true,
-      eventoId: evento.id,
+      eventoId: evento.eventoId,
     });
   } catch (error) {
     console.error("Erro ao criar evento completo:", error);
