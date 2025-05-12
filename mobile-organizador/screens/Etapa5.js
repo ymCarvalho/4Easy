@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,28 +6,60 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Etapa5({ navigation, route }) {
- const { dadosEvento } = route.params;
+export default function Etapa5({ navigation }) {
+  const [dadosEvento, setDadosEvento] = useState(null);
+  const [carregando, setCarregando] = useState(true);
 
+  useEffect(() => {
+    const carregarDados = async () => {
+      try {
+        const dadosEventoString = await AsyncStorage.getItem("@evento");
+        const dadosEvento = dadosEventoString
+          ? JSON.parse(dadosEventoString)
+          : null;
+
+        if (!dadosEvento) {
+          Alert.alert("Erro", "Não foi possível carregar os dados do evento");
+          navigation.goBack();
+          return;
+        }
+
+        setDadosEvento(dadosEvento);
+      } catch (error) {
+        console.error("Erro ao carregar evento:", error);
+        Alert.alert("Erro", "Falha ao carregar dados");
+        navigation.goBack();
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    carregarDados();
+  }, []);
   const enviarEvento = async () => {
     try {
+      if (!dadosEvento) return;
+
       const dadosParaEnviar = {
         nome: dadosEvento.nome,
         descricao: dadosEvento.descricao,
+        estado: dadosEvento.estado,
         tipo: dadosEvento.tipo,
         privacidade: dadosEvento.privacidade,
-        data: dadosEvento.dataInicio,
+        dataInicio: dadosEvento.dataInicio,
+        dataFim: dadosEvento.dataFim,
         localizacao: dadosEvento.localizacao,
         fotos: dadosEvento.fotos,
         ingressos: dadosEvento.ingressos,
       };
-
       const response = await axios.post(
-        "http://192.168.167.147/eventos",
+        "http://192.168.15.13:3000/eventos",
         dadosParaEnviar
       );
 
@@ -40,7 +72,6 @@ export default function Etapa5({ navigation, route }) {
     }
   };
 
-  // Formata a data para exibição
   const formatarData = (data) => {
     return new Date(data).toLocaleDateString("pt-BR", {
       day: "2-digit",
@@ -51,6 +82,28 @@ export default function Etapa5({ navigation, route }) {
     });
   };
 
+  if (carregando) {
+    return (
+      <View style={styles.carregandoContainer}>
+        <ActivityIndicator size="large" color="#3F51B5" />
+        <Text>Carregando dados do evento...</Text>
+      </View>
+    );
+  }
+
+  if (!dadosEvento) {
+    return (
+      <View style={styles.container}>
+        <Text>Não foi possível carregar os dados do evento</Text>
+        <TouchableOpacity
+          style={styles.botaoVoltar}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.botaoTextoVoltar}>Voltar</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.titulo}>Confirmação do Evento</Text>
@@ -196,5 +249,11 @@ const styles = StyleSheet.create({
   botaoTextoVoltar: {
     color: "#3F51B5",
     fontWeight: "bold",
+  },
+  carregandoContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
 });

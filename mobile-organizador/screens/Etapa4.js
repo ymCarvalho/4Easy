@@ -10,9 +10,9 @@ import {
   Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Etapa4({ navigation, route }) {
-  const { dadosEvento } = route.params;
+export default function Etapa4({ navigation }) {
   const [ingressos, setIngressos] = useState([]);
   const [novoIngresso, setNovoIngresso] = useState({
     nome: "",
@@ -52,12 +52,20 @@ export default function Etapa4({ navigation, route }) {
     setIngressos(novosIngressos);
   };
 
-  const avancar = () => {
+  const avancar = async () => {
+    const dadosEventoString = await AsyncStorage.getItem("@evento");
+    const dadosEvento = dadosEventoString ? JSON.parse(dadosEventoString) : {};
+
     const dadosAtualizados = {
       ...dadosEvento,
       ingressos: ingressos,
     };
-    navigation.navigate("Etapa5", { dadosEvento: dadosAtualizados });
+
+    await AsyncStorage.setItem("@evento", JSON.stringify(dadosAtualizados));
+    navigation.navigate("Etapa5");
+
+    const dadosSalvos = await AsyncStorage.getItem("@evento");
+    console.log("Dados salvos no AsyncStorage:", JSON.parse(dadosSalvos));
   };
 
   return (
