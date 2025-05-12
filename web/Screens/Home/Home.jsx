@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from "./Home.module.css";
 import Header from "../Header/Header.jsx";
 import EventCarousel from './EventCarousel';
+import CarouselColecao from './CarouselColecao';
 
 export default function Home() {
 //javascript
@@ -25,6 +26,10 @@ export default function Home() {
         <div className={styles.carouselWrapper}>
           <EventCarousel />
         </div>
+        
+        <div className={styles.carouselWrapper}>
+          <CarouselColecao />
+          </div>
 
         <button onClick={proxima} className={styles.button}>
           Próxima página
@@ -33,4 +38,3 @@ export default function Home() {
       
   );
 }
-
