@@ -1,0 +1,123 @@
+.footer {
+  background: linear-gradient(to bottom, #887ED7, #2816B2);
+  color: black;
+  font-family: 'Montserrat', sans-serif;
+  width: 100%;
+}
+
+.downloadSection {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.downloadSection h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.appButtons {
+  display: flex;
+  justify-content: right;
+  gap: 1rem;
+  flex-wrap: wrap;
+   margin-right: 10px;
+}
+
+.storeButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.badge {
+  height: 40px;
+  width: auto;
+}
+
+.linksSection {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.linksColumn {
+  min-width: 120px;
+}
+
+.linksColumn h4 {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+}
+
+.linksColumn ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.linksColumn li {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.linksColumn li:hover {
+  text-decoration: underline;
+}
+
+.bottomSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.copyright {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 1rem;
+}
+
+.socialIcons img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.socialIcons img:hover {
+  opacity: 0.8;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .linksSection {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  .appButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .badge {
+    height: 35px;
+  }
+}
