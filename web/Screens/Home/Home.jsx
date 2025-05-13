@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from "./Home.module.css";
 import Header from "../Header/Header.jsx";
+import Footer from "../Footer/Footer.jsx";
+
 import EventCarousel from './EventCarousel';
 import CarouselColecao from './CarouselColecao';
 
@@ -20,13 +22,12 @@ export default function Home() {
     <>
       <Header/>
       <div className={styles.container}>
-        <h1 className={styles.title}>Eventos Disponíveis</h1>
+        
         
         {/* Adicione o carrossel aqui */}
         <div className={styles.carouselWrapper}>
           <EventCarousel />
         </div>
-        
         <div className={styles.carouselWrapper}>
           <CarouselColecao />
           </div>
@@ -34,7 +35,10 @@ export default function Home() {
         <button onClick={proxima} className={styles.button}>
           Próxima página
         </button>
-        </div></>
+        </div>
+        <div className={styles.secondPart}></div>
+        <Footer/>
+        </>
       
   );
 }

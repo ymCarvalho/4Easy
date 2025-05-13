@@ -4,7 +4,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(255, 255, 255); /* Usando a cor principal definida no root */
+    background-color: rgb(255, 255, 255); 
     color: white;
     position: sticky;
     top: 0;
@@ -20,7 +20,7 @@
   }
   
   .logo {
-    height: 100px; /* Ajuste conforme necessário */
+    height: 15vh;
     cursor: pointer;
   }
   
@@ -34,8 +34,8 @@
     display: flex;
     align-items: center;
     background: white;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);;
-    border-radius: 24px;
+    border:solid 1px var(--primary-color);
+    border-radius: 10px;
     padding: 0.5rem 1rem;
     width: 90%;
     max-width: 800px;
@@ -177,4 +177,15 @@
     width: 40px;
     height: 4px;
     background: var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+
+    .searchBar,.registerButton,.loginButton{
+      display:none;
+    }
+
+
+
+
   }

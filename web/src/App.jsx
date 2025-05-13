@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import '../src/App.css'
 import RootNavigator from '../Navigator/RootNavigator';
 
+
 function App() {
   const [count, setCount] = useState(0)
 

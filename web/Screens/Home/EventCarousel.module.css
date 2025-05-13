@@ -1,65 +1,133 @@
 .carouselContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 2rem;
 }
 
 .slide {
   padding: 0 15px;
-  box-sizing: border-box;
+  text-align: center;
+  outline: none;
 }
 
+/* Card (apenas imagem) */
 .eventCard {
   background: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 200px;
-  display: flex!important;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  transition: transform 0.3s;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 15px; /* Espaço entre a imagem e as informações */
 }
 
-.eventCard:hover {
-  transform: translateY(-5px);
+.eventImage {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
 }
 
-.eventDetails {
-  margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* Informações textuais */
+.eventInfo {
+  padding: 0 10px;
+}
+
+.eventTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #333;
+  text-transform: uppercase;
+}
+
+.eventSubtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0.3rem 0;
+  color: #555;
+}
+
+.eventMeta {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
   color: #666;
 }
 
-/* Estilos do Slick Carousel */
-.slick-slide {
-  display: flex;
-  justify-content: center;
+.eventMeta span {
+  display: block;
+  margin: 0.2rem 0;
 }
 
+/* Efeitos para o card central */
+.slick-center .eventCard {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos do carrossel */
 .slick-list {
-  padding: 20px 0;
+  padding: 30px 0 !important;
 }
 
 .slick-track {
   display: flex;
+  align-items: flex-start;
+}
+
+.carouselContainer {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: #2816B2;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.slick-dots {
-  bottom: -10px;
+.navButton:hover {
+  background: #1400b4;
+  transform: translateY(-50%) scale(1.1);
 }
 
-.slick-dots li button:before {
-  color: #1400b4;
-  opacity: 0.5;
-  font-size: 10px;
+.prevButton {
+  left: 0;
 }
 
-.slick-dots li.slick-active button:before {
-  opacity: 1;
-  color: #1400b4;
+.nextButton {
+  right: 0;
+}
+
+/* Esconder botões em mobile */
+@media (max-width: 768px) {
+  .navButton {
+    display: none;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .eventImage {
+    height: 250px;
+  }
+  
+  .eventTitle {
+    font-size: 1rem;
+  }
 }

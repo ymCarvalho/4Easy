@@ -3,7 +3,11 @@
   padding: 20px;
   text-align: center;
 }
-
+.secondPart{
+  background-color: bisque;
+  width: 100%;
+  height: auto;
+}
 .carouselWrapper {
   margin: 30px 0;
 }
