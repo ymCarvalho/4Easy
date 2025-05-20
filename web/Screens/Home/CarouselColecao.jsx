@@ -1,47 +1,56 @@
 import React, { useState } from 'react';
-import styles from './Carousel.module.css';
+import styles from './CarouselColecao.module.css';
 
 const CollectionsCarousel = () => {
   const allCollections = [
     "Coleção 1", "Coleção 2", "Coleção 3", 
     "Coleção 4", "Coleção 5", "Coleção 6",
-    "Coleção 7", "Coleção 8"
+    "Coleção 7", "Coleção 8", "Coleção 9",
+    "Coleção 10", "Coleção 11", "Coleção 12"
   ];
   
-  const [visibleCollections, setVisibleCollections] = useState(allCollections.slice(0, 5));
-  const [startIndex, setStartIndex] = useState(0);
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(0);
+  const totalPages = Math.ceil(allCollections.length / itemsPerPage);
+
+  const visibleCollections = allCollections.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
+  const isFirstPage = currentPage === 0;
+  const isLastPage = currentPage === totalPages - 1;
 
   const showNext = () => {
-    const newStartIndex = (startIndex + 1) % allCollections.length;
-    updateVisibleCollections(newStartIndex);
+    if (!isLastPage) {
+      setCurrentPage(prev => prev + 1);
+    }
   };
 
   const showPrev = () => {
-    const newStartIndex = (startIndex - 1 + allCollections.length) % allCollections.length;
-    updateVisibleCollections(newStartIndex);
-  };
-
-  const updateVisibleCollections = (newStartIndex) => {
-    let newCollections = [];
-    for (let i = 0; i < 5; i++) {
-      const index = (newStartIndex + i) % allCollections.length;
-      newCollections.push(allCollections[index]);
+    if (!isFirstPage) {
+      setCurrentPage(prev => prev - 1);
     }
-    setStartIndex(newStartIndex);
-    setVisibleCollections(newCollections);
   };
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>COLEÇÕES</h2>
-      
       <div className={styles.header}>
+        <h2 className={styles.title}>COLEÇÕES</h2>
         <div className={styles.controls}>
           <div className={styles.arrows}>
-            <button onClick={showPrev} className={styles.navButton}>
+            <button 
+              onClick={showPrev} 
+              className={`${styles.navButton} ${isFirstPage ? styles.disabledButton : ''}`}
+              disabled={isFirstPage}
+            >
               &lt;
             </button>
-            <button onClick={showNext} className={styles.navButton}>
+            <button 
+              onClick={showNext} 
+              className={`${styles.navButton} ${isLastPage ? styles.disabledButton : ''}`}
+              disabled={isLastPage}
+            >
               &gt;
             </button>
           </div>
@@ -49,16 +58,26 @@ const CollectionsCarousel = () => {
         </div>
       </div>
       
-      <div className={styles.carouselContainer}>
-        <div className={styles.collectionsTrack}>
-          {visibleCollections.map((item, index) => (
-            <div 
-              key={`${startIndex}-${index}`} 
-              className={styles.collectionItem}
-            >
-              <div className={styles.ball}>{item}</div>
-            </div>
-          ))}
+      <div className={styles.carouselWrapper}>
+        <div className={styles.carouselContainer}>
+          <div className={styles.collectionsTrack}>
+            {visibleCollections.map((item, index) => (
+              <div 
+                key={`${currentPage}-${index}`} 
+                className={styles.collectionItem}
+              >
+                <div className={styles.ball}>{item}</div>
+              </div>
+            ))}
+            
+            {isLastPage && (
+              <div className={styles.collectionItem}>
+                <button className={styles.finalButton}>
+                  Ver tudo
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
