@@ -1,0 +1,15 @@
+header{
+    background-color: rgb(130, 86, 202);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 0.4rem;
+    padding: 0.1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
