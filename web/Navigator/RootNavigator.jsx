@@ -7,7 +7,7 @@ function RootNavigator() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home/>} />          {/* Rota raiz */}
+        <Route path="/" element={<PaginaLogin/>} />          {/* Rota raiz */}
         <Route path="/home" element={<Home />} />      {/* Rota alternativa */}
         <Route  path='/PaginaLogin' element={<PaginaLogin/>} />
 
