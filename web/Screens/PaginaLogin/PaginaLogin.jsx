@@ -13,9 +13,12 @@ export default function PaginaLogin() {
 
     return (
         <div className={styles.pageContainer}>
+
+           
             <Header />
             
             <div className={styles.mainContent}>
+                
                 <div className={styles.loginWrapper}>
                     <div className={styles.logoSide}>
                           <img 
