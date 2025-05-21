@@ -147,3 +147,44 @@
   background: #0d008c;
   transform: scale(1.1);
 }
+
+/* slick */
+
+
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.slick-list {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.slick-track {
+  display: flex;
+  align-items: center;
+}
+
+.slick-slide {
+  display: flex;
+  justify-content: center;
+  margin: 0 1rem; /* Espaço entre os itens */
+}
+
+/* Ajuste para centralizar os itens */
+.slick-slide > div {
+  display: flex !important;
+  justify-content: center;
+}
+
+/* Remove os estilos padrão das setas do Slick */
+.slick-arrow {
+  display: none !important;
+}

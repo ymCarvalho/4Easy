@@ -21,11 +21,13 @@ export default function PaginaLogin() {
                 
                 <div className={styles.loginWrapper}>
                     <div className={styles.logoSide}>
+                        
                           <img 
                          
                                src='../src/assets/Logo4eBranco.png'  alt="Logo da Empresa" className={styles.logoImage}
                             />
-                    </div>
+                            </div>
+               
                     
                     <div className={styles.loginContainer}>
                         <h1>Login</h1>

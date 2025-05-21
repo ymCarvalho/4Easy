@@ -1,15 +1,37 @@
+*{
+    padding:  0 auto;
+    }
 
 .mainContent {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    margin-top: 2em;
+   
+}
+.pattern{
+    opacity: 0.8;
 }
 
-.pageContainer{
-    background-image:url('../../src/assets/pattern.png');
-    
+.pageContainer {
+  position: relative; /* Garante que o pseudo-elemento respeite este container */
+  min-height: 100vh; /* Altura mínima da viewport */
+  overflow: hidden; /* Previne vazamento do background */
+}
+
+.pageContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../src/assets/pattern.png');;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2; /* ajuste a opacidade aqui (0 a 1) */
+  z-index: -1; /* coloca atrás do conteúdo */
 }
 
 
@@ -35,7 +57,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+   
 }
 
 .logoPlaceholder {
@@ -52,7 +74,7 @@
 
 .loginContainer {
     width: 60%;
-    padding: 2rem;
+    margin: 1em;
 }
 
 h1 {
@@ -75,7 +97,7 @@ h1 {
 .formGroup input[type="email"],
 .formGroup input[type="password"] {
     width: 100%;
-    padding: 0.75rem;
+    height: 1.8em;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
@@ -83,16 +105,18 @@ h1 {
 }
 
 .options {
-    display: flex;
-    justify-content: space-between;
+    display: flex;   
     margin-bottom: 1.5rem;
     font-size: 0.9rem;
 }
 
 .leftOptions {
     display: flex;
-    align-items: center;
-    gap: 15px;
+    box-sizing: border-box;
+    gap: 14em;
+    justify-content: space-between;
+
+
 }
 
 .rememberMe {
@@ -110,8 +134,8 @@ h1 {
     text-decoration: none;
     font-weight: bold;
     white-space: nowrap;
-    text-align: end;
-    padding-left: 100px;
+    text-align: right;
+    
 }
 
 .forgotPassword:hover {
@@ -138,7 +162,7 @@ h1 {
 
 .loginButton {
     width: 100%;
-    padding: 0.75rem;
+   
     background-color: #0066cc;
     color: white;
     border: none;
@@ -152,3 +176,77 @@ h1 {
 .loginButton:hover {
     background-color: #0052a3;
 }
+
+/*Parte Mobile*/
+
+@media (max-width: 768px) {
+
+    *{
+        padding: 0 auto !important;
+    }
+
+    .pageContainer{
+        background-attachment: scroll; /* Melhora performance em mobile */
+    background-size: contain; /* Alternativa para padrões pequenos */
+    }
+    
+    .loginWrapper {
+        flex-direction: column;
+        max-width: 100%;
+        margin: 0 15px;
+    }
+
+    .logoSide {
+        width: 100%;
+        
+        background: linear-gradient(135deg, #1400B4 0%, #09004E 100%);
+    }
+
+    .logoImage {
+        max-width: 120px;
+    }
+
+    .loginContainer {
+        width: 100%; 
+        margin: 0;
+        padding: 30px;   
+        box-sizing: border-box;
+    }
+
+    .options {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .leftOptions {
+        justify-content: space-between;
+        gap: 0;
+        
+       
+    }
+
+    .forgotPassword {
+        
+        text-align: right;
+    }
+
+    .rememberMe {
+        font-size: 0.85rem;
+    }
+
+
+    
+    .formGroup input[type="email"],
+    .formGroup input[type="password"] {
+       
+        font-size: 0.9rem;
+        
+    }
+
+    .loginButton {
+       
+        font-size: 0.9rem;
+    }
+}
+
+
