@@ -1,15 +1,55 @@
-header{
-    background-color: rgb(130, 86, 202);
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--primary-color);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    gap: 0.4rem;
-    padding: 0.1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 5%; /* relativo ao tamanho do container */
+  background-color: #887ED7;
+
+  height: 13vh; /* altura relativa à viewport */
+  max-height: 400px; /* altura máxima */
+  box-sizing: border-box;
+}
+
+.leftSection {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  height: 100%;
+}
+
+.logoButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  max-height: 100%; /* relativo ao container */
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+}
+
+.divider {
+  height: 80%; /* relativo ao header */
+  width: 0.1rem; /* usando rem */
+  background-color: #ccc;
+  margin: 0 2%;
+}
+
+.rightSection {
+  flex: 1;
+  text-align: left;
+  padding-left: 2%;
+}
+
+.rightSection h2 {
+  margin: 0;
+  color: #1400B4;
+  font-size: clamp(1rem, 1.5vw, 1.5rem); /* tamanho responsivo */
 }
