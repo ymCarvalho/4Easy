@@ -1,8 +1,9 @@
 /* CarouselColecao.module.css */
 .container {
+  width: 90%;
   max-width: 1200px;
   margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 0 1%;
 }
 
 .header {
@@ -10,15 +11,14 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  gap: 1rem;
+  gap: 1%;
 }
 
 .title {
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
   color: #333;
   font-weight: bold;
   margin: 0;
-  white-space: nowrap;
 }
 
 .controls {
@@ -37,6 +37,118 @@
   color: white;
   border: none;
   border-radius: 50%;
+  width: clamp(30px, 3vw, 36px);
+  height: clamp(30px, 3vw, 36px);
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  padding: 0;
+}
+
+.navButton:hover:not(.disabledButton) {
+  background: #0d008c;
+  transform: scale(1.1);
+}
+
+.carouselWrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carouselContainer {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.collectionsTrack {
+  display: flex;
+  justify-content: center;
+  gap: 2%;
+  padding: 1% 0;
+  flex-wrap: wrap;
+}
+
+.collectionItem {
+  flex: 0 0 18%; /* Aproximadamente 5 itens por linha (100%/5 = 20% - gap) */
+  max-width: 18%;
+  display: flex;
+  justify-content: center;
+}
+
+.ball {
+  width: clamp(80px, 10vw, 100px);
+  height: clamp(80px, 10vw, 100px);
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1%;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  transition: all 0.3s;
+}
+
+.ball:hover {
+  transform: scale(1.05);
+}
+
+.finalItemContainer {
+    flex: 0 0 18%;
+  max-width: 18%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.finalButton {
+  width: clamp(80px, 10vw, 100px);
+  height: clamp(80px, 10vw, 100px);
+  border-radius: 50%;
+  background-color: #1400b4;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1%;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.finalButton:hover {
+  background-color: #0d008c;
+  transform: scale(1.05);
+}
+
+.seeAllButton {
+  background: none;
+  border: none;
+  color: #1400b4;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: 0.5rem 1rem;
+  transition: color 0.3s;
+}
+
+.seeAllButton:hover {
+  color: #0d008c;
+  text-decoration: none;
+}
+
+/* Travar botao */
+
+.navButton {
+  background: #1400b4; /* Cor normal */
+  color: white;
+  border: none;
+  border-radius: 50%;
   width: 36px;
   height: 36px;
   font-size: 1rem;
@@ -48,123 +160,42 @@
   padding: 0;
 }
 
-.navButton:hover {
-  background: #0d008c;
-  transform: scale(1.1);
-}
-
-.carouselWrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.carouselContainer {
-  overflow: hidden;
-  width: fit-content;
-  max-width: 100%;
-}
-
-.collectionsTrack {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  padding: 1rem 0;
-  flex-wrap: wrap;
-}
-
-.collectionItem {
-  flex: 0 0 auto;
-}
-
-.ball {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 1rem;
-  font-size: 1rem;
-  transition: all 0.3s;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.ball:hover {
-  transform: scale(1.05);
-}
-
-.seeAllButton {
-  background: none;
-  border: none;
-  color: #1400b4;
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  transition: color 0.3s;
-  white-space: nowrap;
-}
-
-.seeAllButton:hover {
-  color: #0d008c;
-  text-decoration: none;
-}
-
-.finalButton {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #1400b4;
-  color: white;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.finalButton:hover {
-  background-color: #0d008c;
-  transform: scale(1.05);
-}
-
-/* para mudar de  cor e travar seta */
-.disabledButton {
-  background-color: #e0e0e0 !important;
-  color: #0d008c !important;
-  cursor: not-allowed !important;
-}
-
 .navButton:hover:not(.disabledButton) {
   background: #0d008c;
   transform: scale(1.1);
 }
 
-/* slick */
-
-
-.slick-slider {
-  position: relative;
-  display: block;
-  box-sizing: border-box;
-  user-select: none;
-  touch-action: pan-y;
+.disabledButton {
+  background-color: #e0e0e0 !important; /* Cinza quando desativado */
+  color: #a0a0a0 !important;
+  cursor: not-allowed !important;
 }
 
+/* Mantenha todos os outros estilos existentes */
+
+
+/* Adicione/ajuste estas regras no seu CSS */
+
+.carouselWrapper {
+  width: 100%;
+  padding: 0 20px; /* Espaço para as bolas não cortarem */
+}
+
+.carouselContainer {
+  width: 100%;
+  overflow: visible; /* Permite que as bolas saiam do container */
+}
+
+/* Ajustes do Slick */
 .slick-list {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
+  overflow: visible; /* Importante para não cortar as bolas */
+  padding: 10px 0 !important;
+}
+
+.slick-slide {
+  padding: 0 10px; /* Espaço entre as bolas */
+  display: flex;
+  justify-content: center;
 }
 
 .slick-track {
@@ -172,19 +203,4 @@
   align-items: center;
 }
 
-.slick-slide {
-  display: flex;
-  justify-content: center;
-  margin: 0 1rem; /* Espaço entre os itens */
-}
-
-/* Ajuste para centralizar os itens */
-.slick-slide > div {
-  display: flex !important;
-  justify-content: center;
-}
-
-/* Remove os estilos padrão das setas do Slick */
-.slick-arrow {
-  display: none !important;
-}
+/* Mantenha todos os outros estilos existentes */ 
