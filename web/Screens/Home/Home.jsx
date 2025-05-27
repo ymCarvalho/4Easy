@@ -20,16 +20,20 @@ export default function Home() {
     <>
       <Header />
       <div className={styles.container}>
-
-        <div className={styles.carouselWrapper}>
+      </div>
+        <div className={styles.secondPart}>
+          <div className={styles.carouselWrapper}>
           <CarouselColecao />
         </div>
 
         <button onClick={proxima} className={styles.button}>
           Próxima página
         </button>
-      </div>
-      <div className={styles.secondPart}></div>
+        </div>
+        <div className="floater">
+
+          
+        </div>
       <Footer />
     </>
 

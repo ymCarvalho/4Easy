@@ -6,7 +6,7 @@ export default function AlternativeHeader() {
   return (
        <header className={styles.header}>
       <div className={styles.leftSection}>
-        <Link to="/">
+        <Link to="home">
           <img
             src="../src/assets/Logo oficial.png"
             alt="Logo 4Easy"

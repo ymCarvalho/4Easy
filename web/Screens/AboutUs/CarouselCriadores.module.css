@@ -75,8 +75,8 @@
 }
 
 .navButton {
-  background: #1400B4;
-  color: rgb(255, 255, 255);
+  background: white;
+  color: #1400B4;
   border: none;
   border-radius: 50%;   
   cursor: pointer;
@@ -84,6 +84,6 @@
 }
 
 .navButton:hover {
-  background: #ffffff;
-  color: #1400B4;
+  background: #1400B4;
+  color: #ffffff;
 }
