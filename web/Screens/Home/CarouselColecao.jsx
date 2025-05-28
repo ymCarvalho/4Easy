@@ -70,7 +70,7 @@ const CollectionsCarousel = () => {
               &gt;
             </button>
           </div>
-          <button className={styles.seeAllButton}>Ver tudo</button>
+          <button className={styles.seeAllButton}><b>Ver tudo</b></button>
         </div>
       </div>
       

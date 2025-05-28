@@ -129,7 +129,7 @@
 .seeAllButton {
   background: none;
   border: none;
-  color: #1400b4;
+  color: #000000;
   text-decoration: underline;
   cursor: pointer;
   font-size: clamp(0.9rem, 2vw, 1rem);

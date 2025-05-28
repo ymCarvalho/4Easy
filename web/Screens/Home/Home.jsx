@@ -9,22 +9,25 @@ import CarouselEvents from './CarouselEvents';
 
 const events = [
   {
-    image: "./src/assets/evento1.jpg",
+    image: "./path/to/image1.jpg",
     alt: "Evento 1",
-    nome: "Evento 1",
-    descricao: "Descrição do evento 1"
+    nome: "Nome do Evento 1",
+    local: "São Paulo",
+    data: "sexta-feira, 12 de Fev às 20:00"
   },
   {
-    image: "./src/assets/evento2.jpg",
-    alt: "Evento 2",
-    nome: "Evento 2",
-    descricao: "Descrição do evento 2"
+    image: "./path/to/image1.jpg",
+    alt: "Evento 1",
+    nome: "Nome do Evento 2",
+    local: "São Paulo",
+    data: "sexta-feira, 12 de Fev às 20:00"
   },
   {
-    image: "./src/assets/evento3.jpg",
-    alt: "Evento 3",
-    nome: "Evento 3",
-    descricao: "Descrição do evento 3"
+    image: "./path/to/image1.jpg",
+    alt: "Evento 1",
+    nome: "Nome do Evento 3",
+    local: "São Paulo",
+    data: "sexta-feira, 12 de Fev às 20:00"
   },
   // Adicione mais eventos conforme necessário
 ];
@@ -58,9 +61,7 @@ export default function Home() {
           <CarouselElements />
         </div>
         
-        <button onClick={proxima} className={styles.button}>
-          Próxima página
-        </button>
+        
         </div>
        
           <div className={styles.featureSection}>

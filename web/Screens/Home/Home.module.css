@@ -6,7 +6,7 @@
   text-align: center;
 }
 .secondPart{
-  background-color: rgb(235, 235, 235);
+  background-color: rgb(250, 250, 250);
   width: 100%;
   height: auto;
   text-align: center;
@@ -38,7 +38,7 @@
 
 .featureSection {
   background-color: rgba(88, 71, 227, 0.4);
-  width: 70%;
+  width: 60%;
   align-self: center;
   border-radius: 30px 30px;
   padding: 20px;
@@ -131,12 +131,13 @@
   color: black;
 }
 
-@media (max-width: 768px){
+@media (max-width: 1024px){
   *{
   box-sizing: border-box;
   }
 
   .featureSection{
     flex-direction: column;
+    width: 90%;
   }
 }

@@ -48,9 +48,12 @@ export default function AboutUs() {
 
           </div>
           <div className={styles.txtContainer}>
+            <h1>INÍCIO</h1>
+            <p>
             Como tudo começou: a história por trás da nossa empresa de gestão de eventos
             A nossa trajetória começou com uma paixão em comum: transformar momentos em experiências inesquecíveis. Antes mesmo da ideia de abrir uma empresa, já estávamos sempre envolvidos na organização de festas, casamentos, eventos corporativos e celebrações entre amigos. Percebemos, então, que aquilo que fazíamos com tanto prazer poderia se tornar um negócio — e foi assim que nasceu a [nome da empresa].
             No início, foi tudo muito orgânico. Começamos com eventos pequenos, contando com parceiros de confiança, muita criatividade e um atendimento personalizado. Cada cliente virava uma nova oportunidade de mostrar nosso potencial, e com o tempo, o boca a boca nos trouxe novos projetos e mais visibilidade.
+            </p>
 
 
 

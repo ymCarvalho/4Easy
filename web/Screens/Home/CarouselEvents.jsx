@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import styles from './CarouselEvents.module.css';
 
 const CarouselEvents = ({ events }) => {
-
   if (!events || events.length === 0) {
     return <div className={styles.noEvents}>Nenhum evento disponível</div>;
   }
-  
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -32,47 +31,38 @@ const CarouselEvents = ({ events }) => {
       </button>
       
       <div className={styles.carousel}>
-        {/* Slide anterior */}
+        {/* Slide anterior - mostra apenas imagem */}
         <div className={`${styles.slide} ${styles.leftSlide}`}>
-          <div className={styles.imageWrapper}>
-            <img 
-              src={events[getAdjacentIndex(-1)].image} 
-              alt={events[getAdjacentIndex(-1)].alt} 
-              className={styles.slideImage}
-            />
-          </div>
-          <div className={styles.slideInfo}>
-            <h3>{events[getAdjacentIndex(-1)].nome}</h3>
-          </div>
+          <img 
+            src={events[getAdjacentIndex(-1)].image} 
+            alt={events[getAdjacentIndex(-1)].alt} 
+            className={styles.slideImage}
+          />
         </div>
 
-        {/* Slide atual */}
+        {/* Slide atual - mostra imagem e descrição */}
         <div className={`${styles.slide} ${styles.centerSlide}`}>
-          <div className={styles.imageWrapper}>
-            <img 
-              src={events[currentIndex].image} 
-              alt={events[currentIndex].alt} 
-              className={styles.slideImage}
-            />
-          </div>
-          <div className={styles.slideInfo}>
-            <h3>{events[currentIndex].nome}</h3>
-            <p>{events[currentIndex].descricao}</p>
+          <img 
+            src={events[currentIndex].image} 
+            alt={events[currentIndex].alt} 
+            className={styles.slideImage}
+          />
+          <div className={styles.currentSlideInfo}>
+            <h3 className={styles.eventTitle}>{events[currentIndex].nome}</h3>
+            <div className={styles.eventDetails}>
+              <span className={styles.eventLocation}>📍 {events[currentIndex].local}</span>
+              <span className={styles.eventDate}>🗓️ {events[currentIndex].data}</span>
+            </div>
           </div>
         </div>
 
-        {/* Próximo slide */}
+        {/* Próximo slide - mostra apenas imagem */}
         <div className={`${styles.slide} ${styles.rightSlide}`}>
-          <div className={styles.imageWrapper}>
-            <img 
-              src={events[getAdjacentIndex(1)].image} 
-              alt={events[getAdjacentIndex(1)].alt} 
-              className={styles.slideImage}
-            />
-          </div>
-          <div className={styles.slideInfo}>
-            <h3>{events[getAdjacentIndex(1)].nome}</h3>
-          </div>
+          <img 
+            src={events[getAdjacentIndex(1)].image} 
+            alt={events[getAdjacentIndex(1)].alt} 
+            className={styles.slideImage}
+          />
         </div>
       </div>
 
@@ -83,4 +73,4 @@ const CarouselEvents = ({ events }) => {
   );
 };
 
-export default CarouselEvents;   
+export default CarouselEvents;

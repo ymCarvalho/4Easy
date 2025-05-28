@@ -179,7 +179,7 @@
     background: var(--primary-color);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
 
     .searchBar,.registerButton,.loginButton{
       display:none;
