@@ -4,7 +4,7 @@ const sequelize = require("../db");
 const Organizador = sequelize.define(
   "Organizador",
   {
-    id: {
+    organizadorId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,

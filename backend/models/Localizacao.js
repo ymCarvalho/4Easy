@@ -11,20 +11,20 @@ const Localizacao = sequelize.define(
     },
 
     endereco: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING(300),
       allowNull: false,
     },
     cidade: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(300),
     },
     estado: {
-      type: DataTypes.STRING(2),
+      type: DataTypes.STRING(300),
     },
     cep: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(300),
     },
     complemento: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(300),
       allowNull: true,
     },
 
