@@ -11,6 +11,11 @@ export default function Header() {
     navigate('/paginaLogin');
 
   };
+   const CadastroButton = () => {
+
+    navigate('/pageCadastro');
+
+  };
   return (
     <header className={styles.header}>
       {/* Logo à esquerda */}
@@ -58,7 +63,7 @@ export default function Header() {
 
         <div className={styles.authButtons}>
           <button onClick={loginButton} className={styles.loginButton}>LOGIN</button>
-          <button className={styles.registerButton}>CADASTRE-SE</button>
+          <button onClick={CadastroButton} className={styles.registerButton}>CADASTRE-SE</button>
         </div>
 
         <button className={styles.menuButton}>

@@ -8,7 +8,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 2em;
-   
+    min-height: 60vh; /* Altura mínima da viewport */
 }
 .pattern{
     opacity: 0.8;
@@ -79,8 +79,8 @@
 
 h1 {
     color: #333;
-    text-align: center;
     margin-bottom: 1.5rem;
+    padding-top: 2vh;
 }
 
 .formGroup {
@@ -97,11 +97,12 @@ h1 {
 .formGroup input[type="email"],
 .formGroup input[type="password"] {
     width: 100%;
-    height: 1.8em;
+    height: 2em;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
     box-sizing: border-box;
+    background-color: #F6F6F6;
 }
 
 .options {
