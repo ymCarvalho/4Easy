@@ -1,43 +1,71 @@
-
-
-.boxContainer, .boxContainer2{
-    background-color: rgb(230, 230, 230);
-    width: 100%;    
+.boxContainer,
+.boxContainer2 {
+    background-color: rgb(255, 255, 255);
+    width: 100%;
     align-self: center;
     display: flex;
     color: black;
-    
+    padding: 10vh;
+
+
+
 }
 
-.boxContainer2{
-    background-color: white;
+
+.boxContainer2 {
+    background-color: rgb(255, 255, 255);
 }
 
-.imgContainer,.imgContainer2{
+.imgContainer,
+.imgContainer2 {
     flex: 0.5;
     text-align: center;
-    background: linear-gradient(135deg, #1400B4 0%, #09004E 100%);  
+    background: linear-gradient(135deg, #1400B4 0%, #09004E 100%);
     margin: 20px;
 }
 
-h1{
-    text-align: left;
+.imgContainer {
+    flex: 1;
 }
-.txtContainer, .txtContainer2{
-    flex:1;
+
+.imgContainer2 {
+    background: none;
+    flex: 1;
+}
+
+
+.txtContainer,
+.txtContainer2 {
+    flex: 1;
     text-align: justify;
-    margin-left: 50px;
+    margin-left: 2vh;
+    margin-right: 2vh;
 }
 
 .teamSection {
 
-  text-align: center;
-  background-color: rgba(214, 208, 255, 0.5);
+    text-align: center;
+    background-color: #D6D0FF;
+    ;
+    padding-top: 5vh;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
+        url('../src/assets/pattern.png') center/cover no-repeat fixed;
+
+       box-shadow: 
+    0 -5px 10px -5px rgba(0, 0, 0, 0.3), /* Sombra na parte superior */
+    0 5px 10px -5px rgba(0, 0, 0, 0.3);   /* Sombra na parte inferior */
+
+}
+
+h1 {
+    text-align: left !important;
 }
 
 @media(max-width: 1024px) {
-    .boxContainer, .boxContainer2{
+
+    .boxContainer,
+    .boxContainer2 {
         flex-direction: column;
     }
 }
-

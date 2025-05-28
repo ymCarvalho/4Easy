@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 30%;
+  max-width: 50%;
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -93,21 +93,20 @@
 
 /* Botões de navegação */
 .navButton {
-  position: absolute;
-  background: white;
-  color: #1400B4;
+   background: #1400b4; /* Cor normal */
+  color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: auto;
-  font-size: 1.2rem;
+  width: 2.25em;
+  height: 2.25em  ;
+  font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
+  padding: 0;
+  z-index: 20;
 }
 
 .navButton:hover {

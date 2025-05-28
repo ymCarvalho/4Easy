@@ -9,7 +9,7 @@ export default function PageCadastro() {
     const navigate = useNavigate();
   
     const voltar = () => {
-        navigate('/home');
+        navigate('/paginaLogin');
     };
 
     return (
@@ -98,7 +98,7 @@ export default function PageCadastro() {
 
                             <div className={styles.loginContainer}>
                                 <span>Já tem conta? </span>
-                                <a href="../PaginaLogin/PaginaLogin.jsx" className={styles.loginLink}>Faça login</a>
+                                <button onClick={voltar} className={styles.loginLink}>Faça login</button>
                             </div>
                         </form>
                     </div>

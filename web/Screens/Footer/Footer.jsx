@@ -5,6 +5,10 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.downloadSection}>
+        <div className="leftSection">
+        <img src="./src/assets/Logo4eBranco.png" alt="4e" width={'100vh'}/>
+        </div>
+        <div className="rightSection">
         <h3>Baixe nosso aplicativo</h3>
         <div className={styles.appButtons}>
           <button className={styles.storeButton}>
@@ -21,6 +25,7 @@ export default function Footer() {
               className={styles.badge}
             />
           </button>
+          </div>
         </div>
       </div>
 

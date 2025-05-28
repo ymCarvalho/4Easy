@@ -3,13 +3,16 @@
   color: black;
   font-family: 'Montserrat', sans-serif;
   width: 100%;
-  height: auto;
+  height: auto  ;
 }
 
 .downloadSection {
-  text-align: center;
-  margin-bottom: 2rem;
+  text-align: left;
+  justify-content: center;
   padding: 5px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 .downloadSection h3 {
@@ -19,6 +22,15 @@
   text-align: right;
   margin-right: 10px;
 }
+
+.leftSection{
+  width: 100%;
+  height: 500px;
+  flex:30;
+  
+  
+}
+
 
 .appButtons {
   display: flex;
@@ -126,4 +138,6 @@
   .badge {
     height: 35px;
   }
+
+  
 }

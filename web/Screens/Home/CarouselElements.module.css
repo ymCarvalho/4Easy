@@ -162,6 +162,7 @@
   justify-content: center;
   transition: all 0.3s;
   padding: 0;
+  
 }
 
 .navButton:hover:not(.disabledButton) {
