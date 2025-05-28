@@ -159,7 +159,6 @@ export default function Login() {
         <View style={styles.formContainer}>
           {modo === "cadastro" && (
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Nome completo</Text>
               <TextInput
                 style={styles.input}
                 placeholder="Digite seu nome"
