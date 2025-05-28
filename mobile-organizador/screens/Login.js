@@ -159,7 +159,7 @@ export default function Login() {
         <View style={styles.formContainer}>
           {modo === "cadastro" && (
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Nome completo</Text>
+              <Text style={styles.label}>Nome completoo</Text>
               <TextInput
                 style={styles.input}
                 placeholder="Digite seu nome"
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "#03001E",
     paddingHorizontal: 24,
-    paddingTop: 40,
+    paddingTop: 150,
     paddingBottom: 30,
   },
   header: {
