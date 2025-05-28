@@ -46,6 +46,13 @@ export default function Etapa5({ navigation }) {
     try {
       if (!dadosEvento) return;
 
+      const token = await AsyncStorage.getItem("userToken");
+      console.log("Token sendo usado:", token);
+      if (!token) {
+        Alert.alert("Erro", "Você precisa estar logado para criar um evento");
+        return;
+      }
+
       const dadosParaEnviar = {
         nome: dadosEvento.nome,
         descricao: dadosEvento.descricao,
@@ -59,12 +66,22 @@ export default function Etapa5({ navigation }) {
         ingressos: dadosEvento.ingressos,
       };
       const response = await axios.post(
-        "http://192.168.15.13:3000/eventos",
-        dadosParaEnviar
+        "http://192.168.30.147:3000/eventos",
+        dadosParaEnviar,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-
       Alert.alert("Sucesso!", "Evento criado com sucesso!", [
-        { text: "OK", onPress: () => navigation.popToTop() },
+        {
+          text: "OK",
+          onPress: () => {
+            AsyncStorage.removeItem("@evento");
+            navigation.navigate("Home");
+          },
+        },
       ]);
     } catch (error) {
       console.error("Erro ao criar evento:", error);

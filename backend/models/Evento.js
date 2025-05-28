@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db");
 const Localizacao = require("./Localizacao");
+const Organizador = require("./Organizador");
 
 const Evento = sequelize.define(
   "Evento",
@@ -17,6 +18,14 @@ const Evento = sequelize.define(
       references: {
         model: "Localizacao",
         key: "localizacaoId",
+      },
+    },
+    organizadorId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Organizador",
+        key: "organizadorId",
       },
     },
     NomeEvento: {
@@ -68,4 +77,7 @@ Evento.belongsTo(Localizacao, {
 Localizacao.hasMany(Evento, {
   foreignKey: "localizacaoId",
 });
+
+Evento.belongsTo(Organizador, { foreignKey: "organizadorId" });
+
 module.exports = Evento;
