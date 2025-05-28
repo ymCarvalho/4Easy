@@ -1,64 +1,93 @@
-import React, { useState } from 'react';
-import styles from './Carousel.module.css';
+import React, { useRef, useState } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import styles from './CarouselColecao.module.css';
 
 const CollectionsCarousel = () => {
   const allCollections = [
     "Coleção 1", "Coleção 2", "Coleção 3", 
     "Coleção 4", "Coleção 5", "Coleção 6",
-    "Coleção 7", "Coleção 8"
+    "Coleção 7", "Coleção 8", "Coleção 9",
+    "Coleção 10", "Coleção 11", "Coleção 12",   
+    "Coleção 13", "Coleção 14", "Coleção 15",
+    "Coleção 16", "Coleção 17"
   ];
-  
-  const [visibleCollections, setVisibleCollections] = useState(allCollections.slice(0, 5));
-  const [startIndex, setStartIndex] = useState(0);
 
-  const showNext = () => {
-    const newStartIndex = (startIndex + 1) % allCollections.length;
-    updateVisibleCollections(newStartIndex);
+  const sliderRef = useRef();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    arrows: false,
+    beforeChange: (_, next) => setCurrentSlide(next),
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2
+        }
+      }
+    ]
   };
 
-  const showPrev = () => {
-    const newStartIndex = (startIndex - 1 + allCollections.length) % allCollections.length;
-    updateVisibleCollections(newStartIndex);
-  };
+  const goToNext = () => sliderRef.current.slickNext();
+  const goToPrev = () => sliderRef.current.slickPrev();
 
-  const updateVisibleCollections = (newStartIndex) => {
-    let newCollections = [];
-    for (let i = 0; i < 5; i++) {
-      const index = (newStartIndex + i) % allCollections.length;
-      newCollections.push(allCollections[index]);
-    }
-    setStartIndex(newStartIndex);
-    setVisibleCollections(newCollections);
-  };
+  const isFirstSlide = currentSlide === 0;
+  const isLastSlide = currentSlide + settings.slidesToShow >= allCollections.length + 1; // +1 para o botão "Ver tudo"
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>COLEÇÕES</h2>
-      
       <div className={styles.header}>
+        <h2 className={styles.title}>COLEÇÕES</h2>
         <div className={styles.controls}>
           <div className={styles.arrows}>
-            <button onClick={showPrev} className={styles.navButton}>
+            <button 
+              onClick={goToPrev}
+              className={`${styles.navButton} ${isFirstSlide ? styles.disabledButton : ''}`}
+              disabled={isFirstSlide}
+            >
               &lt;
             </button>
-            <button onClick={showNext} className={styles.navButton}>
+            <button 
+              onClick={goToNext}
+              className={`${styles.navButton} ${isLastSlide ? styles.disabledButton : ''}`}
+              disabled={isLastSlide}
+            >
               &gt;
             </button>
           </div>
-          <button className={styles.seeAllButton}>Ver tudo</button>
+          <button className={styles.seeAllButton}><b>Ver tudo</b></button>
         </div>
       </div>
       
-      <div className={styles.carouselContainer}>
-        <div className={styles.collectionsTrack}>
-          {visibleCollections.map((item, index) => (
-            <div 
-              key={`${startIndex}-${index}`} 
-              className={styles.collectionItem}
-            >
-              <div className={styles.ball}>{item}</div>
+      <div className={styles.carouselWrapper}>
+        <div className={styles.carouselContainer}>
+          <Slider ref={sliderRef} {...settings}>
+            {allCollections.map((item, index) => (
+              <div key={index} className={styles.collectionItem}>
+                <div className={styles.ball}>{item}</div>
+              </div>
+            ))}
+            <div className={styles.collectionItem}>
+              <button className={styles.finalButton}>
+                Ver tudo
+              </button>
             </div>
-          ))}
+          </Slider>
         </div>
       </div>
     </div>

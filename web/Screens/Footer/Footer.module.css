@@ -3,11 +3,13 @@
   color: black;
   font-family: 'Montserrat', sans-serif;
   width: 100%;
+  height: auto;
 }
 
 .downloadSection {
   text-align: center;
   margin-bottom: 2rem;
+  padding: 5px;
 }
 
 .downloadSection h3 {
@@ -111,6 +113,10 @@
     text-align: center;
     gap: 1.5rem;
   }
+
+  .downloadSection h3 { 
+  text-align: center;
+}
   
   .appButtons {
     flex-direction: column;

@@ -9,14 +9,14 @@ export default function Footer() {
         <div className={styles.appButtons}>
           <button className={styles.storeButton}>
             <img 
-              src="/google-play-badge.png" 
+              src="./src/assets/googlePlay.png" 
               alt="Disponível no Google Play"
               className={styles.badge}
             />
           </button>
           <button className={styles.storeButton}>
             <img 
-              src="/app-store-badge.png" 
+              src="./src/assets/appStore.png" 
               alt="Disponível na App Store"
               className={styles.badge}
             />

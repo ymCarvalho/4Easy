@@ -1,0 +1,43 @@
+
+
+.boxContainer, .boxContainer2{
+    background-color: rgb(230, 230, 230);
+    width: 100%;    
+    align-self: center;
+    display: flex;
+    color: black;
+    
+}
+
+.boxContainer2{
+    background-color: white;
+}
+
+.imgContainer,.imgContainer2{
+    flex: 0.5;
+    text-align: center;
+    background: linear-gradient(135deg, #1400B4 0%, #09004E 100%);  
+    margin: 20px;
+}
+
+h1{
+    text-align: left;
+}
+.txtContainer, .txtContainer2{
+    flex:1;
+    text-align: justify;
+    margin-left: 50px;
+}
+
+.teamSection {
+
+  text-align: center;
+  background-color: rgba(214, 208, 255, 0.5);
+}
+
+@media(max-width: 1024px) {
+    .boxContainer, .boxContainer2{
+        flex-direction: column;
+    }
+}
+

@@ -1,8 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import styles from './Header.module.css';
 
+
 export default function Header() {
+
+  const navigate = useNavigate();
+
+  const loginButton = () => {
+    navigate('/paginaLogin');
+
+  };
+   const CadastroButton = () => {
+
+    navigate('/pageCadastro');
+
+  };
   return (
     <header className={styles.header}>
       {/* Logo à esquerda */}
@@ -49,8 +62,8 @@ export default function Header() {
         </div>
 
         <div className={styles.authButtons}>
-          <button className={styles.loginButton}>LOGIN</button>
-          <button className={styles.registerButton}>CADASTRE-SE</button>
+          <button onClick={loginButton} className={styles.loginButton}>LOGIN</button>
+          <button onClick={CadastroButton} className={styles.registerButton}>CADASTRE-SE</button>
         </div>
 
         <button className={styles.menuButton}>
