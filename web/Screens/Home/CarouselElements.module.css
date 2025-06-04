@@ -1,7 +1,6 @@
 /* CarouselColecao.module.css */
 .container {
-  width: 90%;
-  max-width: 1200px;
+  width:90%;
   margin: 2rem auto;
   padding: 0 1%;
 }
@@ -191,11 +190,11 @@
 /* Ajustes do Slick */
 .slick-list {
   overflow: visible; /* Importante para não cortar as bolas */
-  padding: 10px 0 !important;
+  padding: 0 !important;
 }
 
 .slick-slide {
-  padding: 0 10px; /* Espaço entre as bolas */
+  padding: 0 5px; /* Espaço entre as bolas */
   display: flex;
   justify-content: center;
 }

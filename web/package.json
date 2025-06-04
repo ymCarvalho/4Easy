@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-navigation/stack": "^7.2.10",
+    "brazilian-cities": "^2.1.1",
     "jquery": "^3.7.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
