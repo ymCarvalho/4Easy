@@ -4,7 +4,6 @@
   justify-content: space-between;
   padding: 1rem 5%; /* relativo ao tamanho do container */
   background-color: #887ED7;
-
   height: 13vh; /* altura relativa à viewport */
   max-height: 400px; /* altura máxima */
   box-sizing: border-box;

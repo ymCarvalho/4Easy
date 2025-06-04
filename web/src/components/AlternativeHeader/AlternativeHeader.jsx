@@ -8,7 +8,7 @@ export default function AlternativeHeader() {
       <div className={styles.leftSection}>
         <Link to="/home">
           <img
-            src="../src/assets/Logo oficial.png"
+            src="../src/assets/logoExtended.png"
             alt="Logo 4Easy"
             className={styles.logo}
           />

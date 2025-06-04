@@ -1,7 +1,8 @@
 import React from 'react';
-import Footer from "../Footer/Footer.jsx";
+import Footer from '@/components/Footer/Footer';
 import styles from "./AboutUs.module.css";
-import AlternativeHeader from "../AlternativeHeader/AlternativeHeader.jsx";
+import AlternativeHeader from '@/components/AlternativeHeader/AlternativeHeader';
+
 import CarouselCriadores from './CarouselCriadores.jsx';
 
 export default function AboutUs() {

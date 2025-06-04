@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './PageCadastro.module.css';
-import Header from "../Header/Header.jsx";
-import Footer from "../Footer/Footer.jsx";
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 import PaginaLogin from '../PaginaLogin/PaginaLogin.jsx';
 
 export default function PageCadastro() {
