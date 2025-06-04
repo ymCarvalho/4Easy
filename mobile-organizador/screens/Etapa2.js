@@ -31,6 +31,7 @@ export default function Mapa({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const mapRef = useRef(null);
 
+  // Função para buscar o endereço na API
   const handleSearch = async () => {
     if (searchText.length < 3) {
       setResults([]);
@@ -54,6 +55,7 @@ export default function Mapa({ navigation, route }) {
     }
   };
 
+  // Função para selecionar um local da lista de resultados
   const selectLocation = (item) => {
     const newRegion = {
       latitude: item.geometry.lat,
@@ -68,6 +70,7 @@ export default function Mapa({ navigation, route }) {
     mapRef.current?.animateToRegion(newRegion, 1000);
   };
 
+  // Função para confirmar a localização selecionada
   const confirmLocation = async () => {
     if (!selectedPlace) {
       Alert.alert("Atenção", "Selecione um local no mapa");
@@ -75,9 +78,7 @@ export default function Mapa({ navigation, route }) {
     }
     try {
       const dadosEventoString = await AsyncStorage.getItem("@evento");
-      const dadosEvento = dadosEventoString
-        ? JSON.parse(dadosEventoString)
-        : {};
+      const dadosEvento = dadosEventoString ? JSON.parse(dadosEventoString) : {};
 
       const dadosAtualizados = {
         ...dadosEvento,
@@ -85,8 +86,7 @@ export default function Mapa({ navigation, route }) {
           latitude: selectedPlace.geometry.lat,
           longitude: selectedPlace.geometry.lng,
           endereco: selectedPlace.formatted,
-          cidade:
-            selectedPlace.components.city || selectedPlace.components.town,
+          cidade: selectedPlace.components.city || selectedPlace.components.town,
           estado: selectedPlace.components.state,
           cep: selectedPlace.components.postcode,
         },
@@ -105,6 +105,7 @@ export default function Mapa({ navigation, route }) {
 
   return (
     <View style={styles.container}>
+      {/* Mapa */}
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -135,6 +136,7 @@ export default function Mapa({ navigation, route }) {
         )}
       </MapView>
 
+      {/* Caixa de pesquisa */}
       <View style={styles.searchContainer}>
         <MaterialIcons
           name="search"
@@ -154,6 +156,7 @@ export default function Mapa({ navigation, route }) {
         {loading && <ActivityIndicator size="small" color="#3F51B5" />}
       </View>
 
+      {/* Resultados da busca */}
       {results.length > 0 && (
         <View style={styles.resultsContainer}>
           <FlatList
@@ -172,6 +175,7 @@ export default function Mapa({ navigation, route }) {
         </View>
       )}
 
+      {/* Modal de confirmação */}
       <Modal
         visible={showConfirmation}
         transparent={true}
@@ -210,6 +214,7 @@ export default function Mapa({ navigation, route }) {
         </View>
       </Modal>
 
+      {/* Botão de confirmação flutuante */}
       {selectedPlace && (
         <TouchableOpacity
           style={styles.floatingButton}

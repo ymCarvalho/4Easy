@@ -1,292 +1,278 @@
-import React, { useState, useEffect } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
+  TextInput,
   TouchableOpacity,
   FlatList,
   Image,
-  ActivityIndicator,
+  StyleSheet,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons, Feather, AntDesign } from "@expo/vector-icons";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Feather, MaterialIcons, AntDesign } from "@expo/vector-icons";
 
-const Tab = createBottomTabNavigator();
+const HomeScreen = ({ navigation }) => {
+  const [selectedTab, setSelectedTab] = useState("Ativos");
 
-const HomeScreen = () => {
-  const [eventos, setEventos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
+  const eventos = [
+    {
+      id: "1",
+      titulo: "Festa Junina 2025",
+      subtitulo: "Organizado por Jorge Junior",
+      data: "20 JUN",
+      imagem: require("../assets/evento.jpg"),
+      categoria: "Ativos",
+    },
+    {
+      id: "2",
+      titulo: "Festival de Música",
+      subtitulo: "Organizado por Ana Souza",
+      data: "05 JUL",
+      imagem: require("../assets/evento.jpg"),
+      categoria: "Ativos",
+    },
+    {
+      id: "3",
+      titulo: "Conferência de Tecnologia",
+      subtitulo: "Organizado por TechEvents",
+      data: "12 AGO",
+      imagem: require("../assets/evento.jpg"),
+      categoria: "Concluídos",
+    },
+    {
+      id: "4",
+      titulo: "Workshop de Design",
+      subtitulo: "Organizado por Studio X",
+      data: "15 JUN",
+      imagem: require("../assets/evento.jpg"),
+      categoria: "Concluídos",
+    },
+    {
+      id: "5",
+      titulo: "Webinar sobre Startups",
+      subtitulo: "Organizado por StartUp Brazil",
+      data: "25 JUL",
+      imagem: require("../assets/evento.jpg"),
+      categoria: "Rascunhos",
+    },
+    {
+      id: "6",
+      titulo: "Seminário de Inovação",
+      subtitulo: "Organizado por Innovators",
+      data: "30 JUN",
+      imagem: require("../assets/evento.jpg"),
+      categoria: "Rascunhos",
+    },
+  ];
 
-  const fetchEventos = async () => {
-    try {
-      const token = await AsyncStorage.getItem("userToken");
-
-      const response = await axios.get("http://192.168.30.147:3000/eventos", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setEventos(response.data);
-    } catch (error) {
-      console.log(error.response?.data);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchEventos();
-  }, []);
-
-  const renderItem = ({ item }) => (
+  const renderEvento = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() =>
-        navigation.navigate("DetalhesEvento", { eventoId: item.eventoId })
-      }
+      onPress={() => navigation.navigate("EventDetails", { evento: item })}
     >
-      {item.Midia && item.Midia.length > 0 && (
-        <Image
-          source={{ uri: item.Midia[0].url }}
-          style={styles.cardImage}
-          resizeMode="cover"
-        />
-      )}
-      <View style={styles.cardContent}>
-        <Text style={styles.cardTitle}>{item.NomeEvento}</Text>
-        <Text style={styles.cardDate}>
-          {new Date(item.DataInicio).toLocaleDateString()} -{" "}
-          {new Date(item.DataFim).toLocaleDateString()}
-        </Text>
-        <Text style={styles.cardDescription} numberOfLines={2}>
-          {item.DescEvento}
-        </Text>
-        {item.Localizacao && (
-          <Text style={styles.cardLocation}>
-            {item.Localizacao.cidade}, {item.Localizacao.estado}
-          </Text>
-        )}
+      <Image source={item.imagem} style={styles.imagem} />
+      <View style={styles.cardInfo}>
+        <Text style={styles.titulo}>{item.titulo}</Text>
+        <Text style={styles.subtitulo}>{item.subtitulo}</Text>
+      </View>
+      <View style={styles.dataContainer}>
+        <Text style={styles.dataTexto}>{item.data}</Text>
       </View>
     </TouchableOpacity>
   );
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#1400B4" />
-      </View>
-    );
-  }
+  const eventosFiltrados = eventos.filter((evento) => evento.categoria === selectedTab);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Meus Eventos</Text>
-
-      {eventos.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>
-            Você ainda não criou nenhum evento
-          </Text>
-          <TouchableOpacity
-            style={styles.createButton}
-            onPress={() => navigation.navigate("Etapa1")}
-          >
-            <Text style={styles.createButtonText}>Criar primeiro evento</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <FlatList
-          data={eventos}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.eventoId.toString()}
-          contentContainerStyle={styles.listContainer}
+      <View style={styles.logoContainer}>
+        <Image
+          source={require("../assets/branca.png")}
+          style={styles.logo}
+          resizeMode="contain"
         />
-      )}
+      </View>
+
+      <View style={styles.searchContainer}>
+        <Feather name="search" size={20} color="#aaa" style={{ marginRight: 8 }} />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Pesquise"
+          placeholderTextColor="#aaa"
+        />
+      </View>
+
+      <View style={styles.tabs}>
+        {["Ativos", "Concluídos", "Rascunhos"].map((tab) => (
+          <TouchableOpacity
+            key={tab}
+            style={[styles.tabButton, selectedTab === tab && styles.tabButtonActive]}
+            onPress={() => setSelectedTab(tab)}
+          >
+            <Text
+              style={[styles.tabText, selectedTab === tab && styles.tabTextActive]}
+            >
+              {tab}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <FlatList
+        data={eventosFiltrados}
+        keyExtractor={(item) => item.id}
+        renderItem={renderEvento}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      />
+
+      <View style={styles.tabBar}>
+        <MaterialIcons
+          name="home"
+          size={24}
+          color="#1400B4"
+          onPress={() => navigation.navigate("Home")} // Home
+        />
+        <Feather
+          name="message-circle"
+          size={24}
+          color="#fff"
+          onPress={() => navigation.navigate("Chat")} // Chat
+        />
+        <TouchableOpacity
+          style={styles.centralButton}
+          onPress={() => navigation.navigate("Etapa1")} // Etapa1
+        >
+          <Feather name="plus" size={28} color="#fff" />
+        </TouchableOpacity>
+        <AntDesign
+          name="barschart"
+          size={24}
+          color="#fff"
+        />
+        <MaterialIcons
+          name="person"
+          size={24}
+          color="#fff"
+          onPress={() => navigation.navigate("Perfil")} // Perfil
+        />
+      </View>
     </View>
   );
 };
 
-const TelaChat = () => (
-  <View style={styles.tela}>
-    <Text style={styles.texto}>Chat</Text>
-  </View>
-);
-
-const TelaEventos = () => (
-  <View style={styles.tela}>
-    <Text style={styles.texto}>Eventos</Text>
-  </View>
-);
-
-const TelaGrafico = () => (
-  <View style={styles.tela}>
-    <Text style={styles.texto}>Gráfico</Text>
-  </View>
-);
-
-const TelaPerfil = () => (
-  <View style={styles.tela}>
-    <Text style={styles.texto}>Perfil</Text>
-  </View>
-);
-
-const Tabs = () => {
-  const navigation = useNavigation();
-
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarStyle: {
-          backgroundColor: "#1E1E1E",
-          borderTopWidth: 0,
-          height: 70,
-          paddingBottom: 10,
-          paddingTop: 10,
-        },
-        tabBarActiveTintColor: "#1400B4",
-        tabBarInactiveTintColor: "#777",
-        tabBarLabel: () => null,
-        tabBarIcon: ({ color, size }) => {
-          if (route.name === "Home") {
-            return <MaterialIcons name="home" color={color} size={24} />;
-          }
-          if (route.name === "Chat") {
-            return <MaterialIcons name="chat" color={color} size={24} />;
-          }
-          if (route.name === "Eventos") {
-            return (
-              <TouchableOpacity
-                style={styles.botaoCriar}
-                onPress={() => navigation.navigate("Etapa1")}
-              >
-                <Feather name="plus" color="white" size={28} />
-              </TouchableOpacity>
-            );
-          }
-          if (route.name === "Gráfico") {
-            return <AntDesign name="barschart" color={color} size={24} />;
-          }
-          if (route.name === "Perfil") {
-            return <MaterialIcons name="person" color={color} size={24} />;
-          }
-        },
-      })}
-    >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Chat" component={TelaChat} />
-      <Tab.Screen name="Eventos" component={TelaEventos} />
-      <Tab.Screen name="Gráfico" component={TelaGrafico} />
-      <Tab.Screen name="Perfil" component={TelaPerfil} />
-    </Tab.Navigator>
-  );
-};
-
 const styles = StyleSheet.create({
-  tela: {
-    flex: 1,
-    backgroundColor: "#03001E",
-    justifyContent: "center",
+  container: { flex: 1, backgroundColor: "#0e0033", paddingTop: 50 },
+
+  logoContainer: {
     alignItems: "center",
+    marginBottom: 10,
   },
-  texto: {
-    color: "white",
-    fontSize: 20,
+  logo: {
+    width: 200, // 2x tamanho anterior
+    height: 80,
   },
-  botaoCriar: {
+
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#1E1E1E",
+    marginHorizontal: 16,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  searchInput: {
+    flex: 1,
+    color: "#fff",
+    fontSize: 14,
+  },
+
+  tabs: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  tabButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    backgroundColor: "#1E1E1E",
+    marginHorizontal: 5,
+  },
+  tabButtonActive: {
+    backgroundColor: "#1400B4",
+  },
+  tabText: {
+    color: "#aaa",
+    fontSize: 14,
+  },
+  tabTextActive: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
+  card: {
+    flexDirection: "row",
+    backgroundColor: "#1E1E1E",
+    borderRadius: 10,
+    marginHorizontal: 16,
+    marginBottom: 12,
+    overflow: "hidden",
+  },
+  imagem: {
     width: 60,
     height: 60,
-    borderRadius: 30,
+    borderRadius: 10,
+    margin: 10,
+  },
+  cardInfo: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  titulo: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  subtitulo: {
+    color: "#aaa",
+    fontSize: 13,
+  },
+  dataContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+  dataTexto: {
+    color: "#fff",
+    fontSize: 12,
     backgroundColor: "#1400B4",
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    borderRadius: 6,
+    overflow: "hidden",
+  },
+
+  tabBar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "#1E1E1E",
+    height: 70,
+    paddingBottom: 10,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  centralButton: {
+    width: 60,
+    height: 60,
+    backgroundColor: "#1400B4",
+    borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
-    elevation: 6,
-  },
-
-  container: {
-    flex: 1,
-    backgroundColor: "#03001E",
-    padding: 16,
-  },
-  header: {
-    color: "white",
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    fontFamily: "Montserrat_700Bold",
-  },
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: "#03001E",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emptyText: {
-    color: "white",
-    fontSize: 16,
-    fontFamily: "Montserrat_400Regular",
-    marginBottom: 20,
-  },
-  createButton: {
-    backgroundColor: "#1400B4",
-    padding: 15,
-    borderRadius: 8,
-  },
-  createButtonText: {
-    color: "white",
-    fontFamily: "Montserrat_600SemiBold",
-  },
-  listContainer: {
-    paddingBottom: 20,
-  },
-  card: {
-    backgroundColor: "#1E1E1E",
-    borderRadius: 12,
-    marginBottom: 16,
-    overflow: "hidden",
-    elevation: 3,
-  },
-  cardImage: {
-    width: "100%",
-    height: 150,
-  },
-  cardContent: {
-    padding: 16,
-  },
-  cardTitle: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 8,
-    fontFamily: "Montserrat_600SemiBold",
-  },
-  cardDate: {
-    color: "#888",
-    fontSize: 14,
-    marginBottom: 8,
-    fontFamily: "Montserrat_400Regular",
-  },
-  cardDescription: {
-    color: "#ccc",
-    fontSize: 14,
-    marginBottom: 8,
-    fontFamily: "Montserrat_400Regular",
-  },
-  cardLocation: {
-    color: "#1400B4",
-    fontSize: 14,
-    fontFamily: "Montserrat_600SemiBold",
   },
 });
 
-export default Tabs;
+export default HomeScreen;

@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   Image,
+  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
@@ -78,11 +79,6 @@ export default function Login() {
           },
         ]
       );
-
-      const token = await AsyncStorage.getItem("userToken");
-      console.log("Token armazenado:", token);
-      const userData = await AsyncStorage.getItem("userData");
-      console.log("Dados do usuário:", JSON.parse(userData));
     } catch (error) {
       let errorMessage = "Erro na requisição";
 
@@ -94,263 +90,217 @@ export default function Login() {
         errorMessage = error.message;
       }
 
-      console.error("Erro completo:", error);
       Alert.alert("Erro", errorMessage);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.keyboardAvoidingView}
+      style={{ flex: 1 }}
     >
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
+      <ImageBackground
+        source={require("../assets/fundo.png")}
+        style={styles.background}
+        resizeMode="cover"
       >
-        <View style={styles.header}>
-          <Text style={styles.title}>
-            {modo === "login" ? "Bem-vindo de volta!" : "Crie sua conta"}
-          </Text>
-          <Text style={styles.subtitle}>
-            {modo === "login"
-              ? "Faça login para continuar"
-              : "Junte-se à nossa comunidade"}
-          </Text>
-        </View>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.header}>
+            <Image
+              source={require("../assets/roxa.png")}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </View>
 
-        <View style={styles.switchContainer}>
-          <TouchableOpacity
-            style={[
-              styles.switchButton,
-              modo === "login" && styles.activeSwitchButton,
-            ]}
-            onPress={() => setModo("login")}
-          >
-            <Text
-              style={[
-                styles.switchText,
-                modo === "login" && styles.activeSwitchText,
-              ]}
-            >
-              Login
+          <View style={styles.card}>
+            <View style={styles.tabContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.tab,
+                  modo === "login" && styles.activeTab,
+                ]}
+                onPress={() => setModo("login")}
+              >
+                <Text
+                  style={[
+                    styles.tabText,
+                    modo === "login" && styles.activeTabText,
+                  ]}
+                >
+                  Login
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.tab,
+                  modo === "cadastro" && styles.activeTab,
+                ]}
+                onPress={() => setModo("cadastro")}
+              >
+                <Text
+                  style={[
+                    styles.tabText,
+                    modo === "cadastro" && styles.activeTabText,
+                  ]}
+                >
+                  Cadastro
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.title}>
+              {modo === "login" ? "Bem-vindo!" : "Crie sua conta"}
             </Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[
-              styles.switchButton,
-              modo === "cadastro" && styles.activeSwitchButton,
-            ]}
-            onPress={() => setModo("cadastro")}
-          >
-            <Text
-              style={[
-                styles.switchText,
-                modo === "cadastro" && styles.activeSwitchText,
-              ]}
-            >
-              Cadastro
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.formContainer}>
-          {modo === "cadastro" && (
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Nome completo</Text>
+            {modo === "cadastro" && (
               <TextInput
                 style={styles.input}
-                placeholder="Digite seu nome"
+                placeholder="Nome completo"
                 placeholderTextColor="#999"
                 value={nome}
                 onChangeText={setNome}
               />
-            </View>
-          )}
+            )}
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email</Text>
             <TextInput
               style={styles.input}
-              placeholder="Digite seu email"
+              placeholder="Email"
               placeholderTextColor="#999"
-              value={email}
               keyboardType="email-address"
               autoCapitalize="none"
+              value={email}
               onChangeText={setEmail}
             />
-          </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Senha</Text>
             <TextInput
               style={styles.input}
-              placeholder="Digite sua senha"
+              placeholder="Senha"
               placeholderTextColor="#999"
-              value={senha}
               secureTextEntry
+              value={senha}
               onChangeText={setSenha}
             />
-          </View>
 
-          {modo === "login" && (
-            <TouchableOpacity style={styles.forgotPassword}>
-              <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
+            {modo === "login" && (
+              <TouchableOpacity style={styles.forgotPassword}>
+                <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
+              </TouchableOpacity>
+            )}
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>
+                  {modo === "login" ? "Entrar" : "Cadastrar"}
+                </Text>
+              )}
             </TouchableOpacity>
-          )}
-        </View>
-
-        <TouchableOpacity
-          style={styles.botao}
-          onPress={handleSubmit}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.botaoTexto}>
-              {modo === "login" ? "Entrar" : "Cadastrar"}
-            </Text>
-          )}
-        </TouchableOpacity>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            {modo === "login" ? "Não tem uma conta? " : "Já tem uma conta? "}
-          </Text>
-          <TouchableOpacity
-            onPress={() => setModo(modo === "login" ? "cadastro" : "login")}
-          >
-            <Text style={styles.footerLink}>
-              {modo === "login" ? "Cadastre-se" : "Faça login"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  keyboardAvoidingView: {
+  background: {
     flex: 1,
+    width: "100%",
+    height: "100%",
   },
   container: {
     flexGrow: 1,
-    backgroundColor: "#03001E",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
     paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 30,
   },
   header: {
+    marginBottom: 24,
     alignItems: "center",
-    marginBottom: 30,
   },
   logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
+    width: 180,
+    height: 180,
   },
-  title: {
-    fontSize: 24,
-    color: "#fff",
-    fontFamily: "Montserrat_700Bold",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "rgba(255, 255, 255, 0.7)",
-    fontFamily: "Montserrat_400Regular",
-  },
-  switchContainer: {
-    flexDirection: "row",
+  card: {
     width: "100%",
-    marginBottom: 30,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: 12,
-    padding: 4,
-  },
-  switchButton: {
-    flex: 1,
-    paddingVertical: 12,
-    alignItems: "center",
-    borderRadius: 8,
-  },
-  activeSwitchButton: {
-    backgroundColor: "rgba(65, 105, 225, 0.2)",
-  },
-  switchText: {
-    fontSize: 16,
-    color: "rgba(255, 255, 255, 0.7)",
-    fontFamily: "Montserrat_600SemiBold",
-  },
-  activeSwitchText: {
-    color: "rgb(65, 105, 225)",
-  },
-  formContainer: {
-    width: "100%",
-    marginBottom: 20,
-  },
-  inputContainer: {
-    marginBottom: 16,
-  },
-  label: {
-    color: "#fff",
-    fontFamily: "Montserrat_600SemiBold",
-    marginBottom: 8,
-    fontSize: 14,
-  },
-  input: {
-    width: "100%",
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.2)",
-    borderRadius: 12,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    color: "#fff",
-    fontFamily: "Montserrat_400Regular",
-  },
-  forgotPassword: {
-    alignSelf: "flex-end",
-    marginTop: -10,
-    marginBottom: 20,
-  },
-  forgotPasswordText: {
-    color: "rgb(65, 105, 225)",
-    fontFamily: "Montserrat_600SemiBold",
-    fontSize: 14,
-  },
-  botao: {
-    backgroundColor: "rgb(65, 105, 225)",
-    padding: 18,
-    borderRadius: 12,
-    width: "100%",
-    alignItems: "center",
-    marginBottom: 20,
-    shadowColor: "rgb(65, 105, 225)",
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 24,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 5,
   },
-  botaoTexto: {
+  tabContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 16,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 12,
+    padding: 4,
+  },
+  tab: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  activeTab: {
+    backgroundColor: "#1400b4",
+  },
+  tabText: {
+    fontFamily: "Montserrat_600SemiBold",
+    color: "#1400b4",
+  },
+  activeTabText: {
+    color: "#fff",
+  },
+  title: {
+    fontSize: 22,
+    fontFamily: "Montserrat_700Bold",
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#1400b4",
+  },
+  input: {
+    backgroundColor: "#f2f2f2",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    fontFamily: "Montserrat_400Regular",
+    color: "#333",
+  },
+  forgotPassword: {
+    alignItems: "flex-end",
+    marginBottom: 16,
+  },
+  forgotPasswordText: {
+    fontSize: 14,
+    fontFamily: "Montserrat_600SemiBold",
+    color: "#1400b4",
+  },
+  button: {
+    backgroundColor: "#1400b4",
+    padding: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 8,
+  },
+  buttonText: {
     color: "#fff",
     fontSize: 16,
     fontFamily: "Montserrat_700Bold",
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 10,
-  },
-  footerText: {
-    color: "rgba(255, 255, 255, 0.7)",
-    fontFamily: "Montserrat_400Regular",
-  },
-  footerLink: {
-    color: "rgb(65, 105, 225)",
-    fontFamily: "Montserrat_600SemiBold",
   },
 });
