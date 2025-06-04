@@ -10,6 +10,9 @@ export default function PaginaLogin() {
     const voltar = () => {
         navigate('/home');
     };
+        const PageCadastro = () => {
+        navigate('/pageCadastro');
+    };
 
     return (
         <div className={styles.pageContainer}>
@@ -57,7 +60,7 @@ export default function PaginaLogin() {
 
                             <div className={styles.registerContainer}>
                                 <span>Não tem conta? </span>
-                                <a href="#" className={styles.registerLink}>Cadastre-se</a>
+                                <button onClick={PageCadastro} className={styles.registerLink}>Cadastre-se</button>
                             </div>
                         </form>
                     </div>

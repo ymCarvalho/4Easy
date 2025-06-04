@@ -7,17 +7,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2em;
-    min-height: 60vh; /* Altura mínima da viewport */
+    margin-top: 2vh;
+    min-height: 80vh; /* Altura mínima da viewport */
+    margin-bottom: 2vh;
 }
 .pattern{
     opacity: 0.8;
 }
 
 .pageContainer {
-  position: relative; /* Garante que o pseudo-elemento respeite este container */
-  min-height: 100vh; /* Altura mínima da viewport */
-  overflow: hidden; /* Previne vazamento do background */
+  position: relative; 
+  min-height: 100vh; 
+  overflow: hidden; 
 }
 
 .pageContainer::before {
@@ -103,6 +104,7 @@ h1 {
     font-size: 1rem;
     box-sizing: border-box;
     background-color: #F6F6F6;
+    color: black;
 }
 
 .options {

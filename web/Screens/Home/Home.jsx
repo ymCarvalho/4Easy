@@ -9,21 +9,21 @@ import CarouselEvents from './CarouselEvents';
 
 const events = [
   {
-    image: "./path/to/image1.jpg",
+    image: "../src/assets/Rafael.png",
     alt: "Evento 1",
     nome: "Nome do Evento 1",
     local: "São Paulo",
     data: "sexta-feira, 12 de Fev às 20:00"
   },
   {
-    image: "./path/to/image1.jpg",
+    image: "../src/assets/Jorge.png",
     alt: "Evento 1",
     nome: "Nome do Evento 2",
     local: "São Paulo",
     data: "sexta-feira, 12 de Fev às 20:00"
   },
   {
-    image: "./path/to/image1.jpg",
+    image: "../src/assets/Lele.png",
     alt: "Evento 1",
     nome: "Nome do Evento 3",
     local: "São Paulo",
@@ -91,7 +91,7 @@ export default function Home() {
               </div>
 
             <div className={styles.actionButtons}>
-              <button onClick={proxima} className={styles.actionButton}>Seja um criador</button>
+              <button onClick={proxima} className={styles.actionButton}>Sobre nós</button>
               <button className={styles.actionButton}>Veja como funciona</button>
             </div>
 

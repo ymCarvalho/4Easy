@@ -37,7 +37,7 @@
     border:solid 1px var(--primary-color);
     border-radius: 10px;
     padding: 0.5rem 1rem;
-    width: 90%;
+    width: 50%;
     max-width: 800px;
   }
   
@@ -181,8 +181,12 @@
 
   @media (max-width: 1024px) {
 
-    .searchBar,.registerButton,.loginButton{
+    .registerButton,.loginButton{
       display:none;
+    }
+
+    .searchBar{
+      width: 70%  ;
     }
 
 

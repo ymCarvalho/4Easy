@@ -37,7 +37,7 @@ export default function Header() {
           </svg>
           <input
             type="text"
-            placeholder="Pesquisar..."
+            placeholder="Pesquisar eventos, categorias, produtores..."
             className={styles.searchInput}
           />
         </div>
