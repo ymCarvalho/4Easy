@@ -118,6 +118,7 @@
   width: 100%;
   font-size: 1em;
   background: transparent;
+  color: black;
 }
 
 /* Menu direito */
@@ -226,6 +227,93 @@
   width: 25px;
   height: 3px;
   background: var(--primary-color);
+}
+
+/* Estilos para o menu dropdown */
+.menuDropdown {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 400px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.menuContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menuTitle {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.menuItems {
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.menuItem {
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.menuItem:hover {
+  background-color: #f5f5f5;
+}
+
+.menuAuthButtons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.menuLoginButton {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.menuRegisterButton {
+  flex: 1;
+  padding: 10px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 /* Responsividade */
