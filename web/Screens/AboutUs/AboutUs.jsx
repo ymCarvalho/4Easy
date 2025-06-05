@@ -2,31 +2,37 @@ import React from 'react';
 import Footer from '@/components/Footer/Footer';
 import styles from "./AboutUs.module.css";
 import AlternativeHeader from '@/components/AlternativeHeader/AlternativeHeader';
+import Rafael from '@images/team/Rafael.png';
+import Jorge from '@images/team/Jorge.png'
+import Leandro from '@images/team/Lele.png';
+import Yasmin from '@images/team/Yasmin.png';
+import Trajetoria from '@images/placeholders/Trajetoria.png';
+import Fundo from '@images/placeholders/pattern.png';
 
 import CarouselCriadores from './CarouselCriadores.jsx';
 
 export default function AboutUs() {
   const criadores = [
     {
-      image: '../src/assets/Lele.png',
+      image: Leandro,
       alt: 'Foto do Criador 1',
       nome: 'Leandro',
 
     },
     {
-      image: '../src/assets/Rafael.png',
+      image: Rafael,
       alt: 'Foto do Criador 2',
       nome: 'Rafael',
 
     },
     {
-      image: '../src/assets/Jorge.png',
+      image: Jorge,
       alt: 'Foto do Criador 3',
       nome: 'Jorge',
 
     },
     {
-      image: '../src/assets/Yasmin.png',
+      image: Yasmin,
       alt: 'Foto do Criador 4',
       nome: 'Yasmin',
 
@@ -71,7 +77,7 @@ export default function AboutUs() {
           <div className={styles.imgContainer2}>
 
             <img
-              src='../src/assets/Trajetoria.png'
+              src= {Trajetoria}
               alt='Foto da Logo 4e'
               style={{ maxWidth: '300px', width: '50%' }}
             ></img>

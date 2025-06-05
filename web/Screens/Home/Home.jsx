@@ -6,24 +6,30 @@ import Footer from '@/components/Footer/Footer';
 import CarouselColecao from './CarouselColecao';
 import CarouselElements from './CarouselElements';
 import CarouselEvents from './CarouselEvents';
+import Rafael from '@images/team/Rafael.png';
+import Jorge from '@images/team/Jorge.png'
+import Leandro from '@images/team/Lele.png';
+import cellphone from '@images/placeholders/cellphone.png';
+import cellphone4easy from '@images/placeholders/cellPhone4easy.png';
+import money from '@images/placeholders/money.png';
 
 const events = [
   {
-    image: "../src/assets/Rafael.png",
+    image: Rafael,
     alt: "Evento 1",
     nome: "Nome do Evento 1",
     local: "São Paulo",
     data: "sexta-feira, 12 de Fev às 20:00"
   },
   {
-    image: "../src/assets/Jorge.png",
+    image: Jorge,
     alt: "Evento 1",
     nome: "Nome do Evento 2",
     local: "São Paulo",
     data: "sexta-feira, 12 de Fev às 20:00"
   },
   {
-    image: "../src/assets/Lele.png",
+    image: Leandro,
     alt: "Evento 1",
     nome: "Nome do Evento 3",
     local: "São Paulo",
@@ -71,12 +77,12 @@ export default function Home() {
             
             <div className={styles.featureBoxes}>
               <div className={styles.featureBox}>
-                <img src="./src/assets/cellphone.png" alt="Celular" className={styles.featureIcon} />
+                <img src={cellphone} alt="Celular" className={styles.featureIcon} />
                 <p className={styles.featureText}>Com apenas <b>alguns cliques</b></p>
               </div>
               
               <div className={styles.featureBox}>
-                <img src="./src/assets/money.png" alt="Dinheiro" className={styles.featureIcon} />
+                <img src={money} alt="Dinheiro" className={styles.featureIcon} />
                 <p className={styles.featureText}>Crie seu evento <b>gratuitamente!</b> </p>
               </div>
             </div>
@@ -86,7 +92,7 @@ export default function Home() {
           
             <div className="featureContent2">
                 <div className={styles.featureBox}>
-                <img src="./src/assets/cellPhone4easy.png" alt="Celular" className={styles.featureIcon2} />
+                <img src={cellphone4easy} alt="Celular" className={styles.featureIcon2} />
                 
               </div>
 
