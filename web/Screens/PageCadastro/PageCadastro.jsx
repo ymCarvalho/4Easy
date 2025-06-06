@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './PageCadastro.module.css';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import logoBranca from '@images/logos/Logo4eBranco.png'
 
 export default function PageCadastro() {
     const navigate = useNavigate();
@@ -78,7 +79,7 @@ export default function PageCadastro() {
                 <div className={styles.cadastroWrapper}>
                     <div className={styles.logoSide}>
                         <img 
-                            src='../src/assets/Logo4eBranco.png' 
+                            src={logoBranca} 
                             alt="Logo da Empresa" 
                             className={styles.logoImage}
                         />

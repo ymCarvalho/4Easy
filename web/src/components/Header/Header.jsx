@@ -9,13 +9,13 @@ export default function Header() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   
-  // Corrigido: Inicia como false na Home e true nas outras páginas
+ 
   const [isScrolled, setIsScrolled] = useState(() => {
     if (isHomePage) {
-      // Na Home, verifica a posição inicial do scroll
+  
       return typeof window !== 'undefined' ? window.scrollY > 50 : false;
     }
-    // Nas outras páginas, inicia como true (compacto)
+
     return true;
   });
 
@@ -25,13 +25,13 @@ export default function Header() {
         setIsScrolled(window.scrollY > 50);
       };
 
-      // Verifica a posição inicial imediatamente
+     
       handleScroll();
       
       window.addEventListener('scroll', handleScroll);
       return () => window.removeEventListener('scroll', handleScroll);
     }
-    // Nas outras páginas não precisa do listener
+
   }, [isHomePage]);
 
   const loginButton = () => navigate('/paginaLogin');

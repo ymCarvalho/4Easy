@@ -1,3 +1,11 @@
+.bannerSection{
+    width: 100%;
+    height: 70vh;
+    background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('../src/assets/images/placeholders/partyBanner.png') center/cover no-repeat fixed;
+}
+
+
+
 .boxContainer,
 .boxContainer2 {
     background-color: rgb(255, 255, 255);
@@ -6,8 +14,6 @@
     display: flex;
     color: black;
     padding: 10vh;
-
-
 
 }
 
@@ -52,9 +58,11 @@
         linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
         url('../src/assets/images/placeholders/pattern.png') center/cover no-repeat fixed;
 
-       box-shadow: 
-    0 -5px 10px -5px rgba(0, 0, 0, 0.3), /* Sombra na parte superior */
-    0 5px 10px -5px rgba(0, 0, 0, 0.3);   /* Sombra na parte inferior */
+    box-shadow:
+        0 -5px 10px -5px rgba(0, 0, 0, 0.3),
+        /* Sombra na parte superior */
+        0 5px 10px -5px rgba(0, 0, 0, 0.3);
+    /* Sombra na parte inferior */
 
 }
 
