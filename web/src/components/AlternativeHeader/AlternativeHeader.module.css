@@ -2,11 +2,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 5%; /* relativo ao tamanho do container */
+  padding: 1rem 5%; 
   background-color: #887ED7;
-
-  height: 13vh; /* altura relativa à viewport */
-  max-height: 400px; /* altura máxima */
+  height: 12vh; 
+  max-height: 400px; 
   box-sizing: border-box;
 }
 

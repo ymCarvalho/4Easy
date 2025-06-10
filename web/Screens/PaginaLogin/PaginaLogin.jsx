@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './PaginaLogin.module.css';
-import Header from "../Header/Header.jsx";
-import Footer from "../Footer/Footer.jsx";
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
+import logoBranca from '@images/logos/Logo4eBranco.png'
 
 export default function PaginaLogin() {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function PaginaLogin() {
                         
                           <img 
                          
-                               src='../src/assets/Logo4eBranco.png'  alt="Logo da Empresa" className={styles.logoImage}
+                               src={logoBranca}  alt="Logo da Empresa" className={styles.logoImage}
                             />
                             </div>
                

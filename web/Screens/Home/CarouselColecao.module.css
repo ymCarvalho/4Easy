@@ -1,9 +1,9 @@
 /* CarouselColecao.module.css */
 .container {
-  width: 90%;
+  width: 100%;
   max-width: 1200px;
   margin: 2rem auto;
-  padding: 0 1%;
+
 }
 
 .header {
@@ -61,7 +61,7 @@
 
 .carouselContainer {
   width: 100%;
-  margin: 0 auto;
+  overflow: hidden;
 }
 
 .collectionsTrack {
@@ -167,20 +167,12 @@
 }
 
 .disabledButton {
-  background-color: #e0e0e0 !important; /* Cinza quando desativado */
+  background-color: #e0e0e0 !important; 
   color: #a0a0a0 !important;
   cursor: not-allowed !important;
 }
 
-/* Mantenha todos os outros estilos existentes */
 
-
-/* Adicione/ajuste estas regras no seu CSS */
-
-.carouselWrapper {
-  width: 100%;
-  padding: 0 20px; /* Espaço para as bolas não cortarem */
-}
 
 .carouselContainer {
   width: 100%;
@@ -189,14 +181,14 @@
 
 /* Ajustes do Slick */
 .slick-list {
-  overflow: visible; /* Importante para não cortar as bolas */
-  padding: 10px 0 !important;
+  overflow: hidden; /* Importante para não cortar as bolas */
+  padding: 0 !important;
+  box-sizing: border-box;
 }
 
 .slick-slide {
-  padding: 0 10px; /* Espaço entre as bolas */
-  display: flex;
-  justify-content: center;
+  padding: 0 8px; /* Espaço entre as bolas */
+  box-sizing: border-box;
 }
 
 .slick-track {

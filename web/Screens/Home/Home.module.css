@@ -6,7 +6,7 @@
   text-align: center;
 }
 .secondPart{
-  background-color: rgb(250, 250, 250);
+  background-color: rgb(243, 243, 243);
   width: 100%;
   height: auto;
   text-align: center;
@@ -82,8 +82,8 @@
 .featureBoxes {
   display: flex;
   justify-content:space-around;
-  flex-wrap: wrap;
-  gap: 20px;
+
+
   
 }
 

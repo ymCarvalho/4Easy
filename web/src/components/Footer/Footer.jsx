@@ -1,26 +1,29 @@
 import React from 'react';
 import styles from './Footer.module.css';
+import whiteLogo from '@images/logos/Logo4eBranco.png'
+import apple from '@images/apps/appStore.png'
+import googlePlay from '@images/apps/googlePlay.png'
 
 export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.downloadSection}>
         <div className="leftSection">
-        <img src="./src/assets/Logo4eBranco.png" alt="4e" width={'100vh'}/>
+        <img src= {whiteLogo} alt="4e" width={'100vh'}/>
         </div>
         <div className="rightSection">
         <h3>Baixe nosso aplicativo</h3>
         <div className={styles.appButtons}>
           <button className={styles.storeButton}>
             <img 
-              src="./src/assets/googlePlay.png" 
+              src={googlePlay} 
               alt="Disponível no Google Play"
               className={styles.badge}
             />
           </button>
           <button className={styles.storeButton}>
             <img 
-              src="./src/assets/appStore.png" 
+              src={apple}
               alt="Disponível na App Store"
               className={styles.badge}
             />
