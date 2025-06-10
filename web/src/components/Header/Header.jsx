@@ -51,9 +51,31 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMenuOpen]);
 
+  // Bloqueio do scroll quando o menu está aberto
+useEffect(() => {
+  const originalStyle = window.getComputedStyle(document.body).overflow;
+  const originalPosition = window.getComputedStyle(document.body).position;
+  const scrollY = window.scrollY;
+  
+  if (isMenuOpen) {
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+  }
+
+  return () => {
+    document.body.style.overflow = originalStyle;
+    document.body.style.position = originalPosition;
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, parseInt(scrollY || '0'));
+  };
+}, [isMenuOpen]);
+
   return (
     <>
-      <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+       <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''} ${isMenuOpen ? styles.menuOpen : ''}`}>  
         <div className={styles.headerContent}>
           <div className={styles.logoContainer}>
             <Link to="/">
@@ -61,7 +83,7 @@ export default function Header() {
                 src={isScrolled ? LogoOficial : LogoCompleta}
                 alt="Logo 4Easy"
                 className={styles.logo} />
-            </Link>
+            </Link> 
             {!isScrolled && <p>Seu evento, do jeito que você imagina.</p>}
           </div>
 
@@ -155,6 +177,7 @@ export default function Header() {
       
       {/* Menu Dropdown Centralizado */}
       {isMenuOpen && (
+        
         <div className={styles.menuDropdown}>
           <div className={styles.menuContent}>
             <h3 className={styles.menuTitle}>Menu</h3>
@@ -162,16 +185,18 @@ export default function Header() {
               <li className={styles.menuItem} onClick={() => navigate('/')}>Home</li>
               <li className={styles.menuItem} onClick={() => navigate('/eventos')}>Eventos</li>
               <li className={styles.menuItem} onClick={() => navigate('/categorias')}>Categorias</li>
-              <li className={styles.menuItem} onClick={() => navigate('/sobre')}>Sobre Nós</li>
+              <li className={styles.menuItem} onClick={() => navigate('/aboutus')}>Sobre Nós</li>
               <li className={styles.menuItem} onClick={() => navigate('/contato')}>Contato</li>
             </ul>
-            <div className={styles.menuAuthButtons}>
+            <div className={styles.menuAuthButtons}>        
               <button onClick={loginButton} className={styles.menuLoginButton}>Login</button>
               <button onClick={CadastroButton} className={styles.menuRegisterButton}>Cadastre-se</button>
             </div>
           </div>
         </div>
       )}
+
+      
       
       <div className="header-spacer" />
     </>
