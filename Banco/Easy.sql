@@ -33,6 +33,7 @@ CREATE TABLE Evento (
     valorPatrocinio DECIMAL(10),
     prioridadeEvento INT DEFAULT 0,
     emAlta BIT DEFAULT 0,
+    StatusEvento VARCHAR,
     FOREIGN KEY (organizadorId) REFERENCES Organizador(organizadorId)
 );
 

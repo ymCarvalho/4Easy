@@ -15,9 +15,6 @@ app.use(cors());
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
-app.get("/", (req, res) => {
-  res.send("Servidor está funcionando corretamente!");
-});
 
 const autenticar = (req, res, next) => {
   const token = req.headers["authorization"];
@@ -94,34 +91,6 @@ app.post("/login/organizador", async (req, res) => {
     });
   }
 });
-app.post("/cadastro/convidado", async (req, res) => {
-  const { nome, email, senha } = req.body;
-
-  try {
-    const novoConvidado = await Convidado.create({ nome, email, senha });
-    res.status(201).json(novoConvidado);
-  } catch (error) {
-    console.error("Erro ao criar convidado", error);
-    res.status(500).send("Erro ao criar convidado");
-  }
-});
-
-app.post("/login/convidado", async (req, res) => {
-  const { email, senha } = req.body;
-  try {
-    const convidado = await Convidado.findOne({ where: { email } });
-    if (!convidado.email) {
-      return res.status(401).json({ message: "Email inválido" });
-    } else if (convidado.senha !== senha) {
-      return res.status(401).json({ erro: "Senha inválida" });
-    }
-    res
-      .status(201)
-      .json({ message: "Login convidado bem-sucedido", convidado });
-  } catch (error) {
-    res.status(500).json({ erro: "Erro ao fazer login de convidado", error });
-  }
-});
 
 app.post("/eventos", autenticar, async (req, res) => {
   try {
@@ -135,6 +104,7 @@ app.post("/eventos", autenticar, async (req, res) => {
       localizacao,
       fotos,
       ingressos,
+      status,
     } = req.body;
 
     const [localizacaoCriada] = await Localizacao.findOrCreate({
@@ -159,13 +129,14 @@ app.post("/eventos", autenticar, async (req, res) => {
     console.log("Localização criada:", localizacaoCriada.localizacaoId);
 
     const evento = await Evento.create({
-      NomeEvento: nome,
-      DescEvento: descricao,
-      TipoEvento: tipo,
-      PrivacidadeEvento: privacidade,
-      DataInicio: dataInicio,
-      DataFim: dataFim,
+      nomeEvento: nome,
+      descEvento: descricao,
+      tipoEvento: tipo,
+      privacidadeEvento: privacidade,
+      dataInicio: dataInicio,
+      dataFim: dataFim,
       localizacaoId: localizacaoCriada.localizacaoId,
+      statusEvento: status,
       organizadorId: req.usuarioId,
     });
 
@@ -213,7 +184,16 @@ app.get("/eventos", autenticar, async (req, res) => {
   try {
     const eventos = await Evento.findAll({
       where: { organizadorId: req.usuarioId },
-      include: [Localizacao, Midia],
+      include: [
+        {
+          model: Localizacao,
+        },
+        {
+          model: Organizador,
+          attributes: ["nome"], 
+        },
+      ],
+      order: [["dataInicio", "ASC"]],
     });
 
     res.status(200).json(eventos);

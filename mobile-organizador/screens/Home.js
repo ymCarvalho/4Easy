@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,62 +7,87 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import { Feather, MaterialIcons, AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState("Ativos");
+  const [eventos, setEventos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
 
-  const eventos = [
-    {
-      id: "1",
-      titulo: "Festa Junina 2025",
-      subtitulo: "Organizado por Jorge Junior",
-      data: "20 JUN",
-      imagem: require("../assets/evento.jpg"),
-      categoria: "Ativos",
-    },
-    {
-      id: "2",
-      titulo: "Festival de Música",
-      subtitulo: "Organizado por Ana Souza",
-      data: "05 JUL",
-      imagem: require("../assets/evento.jpg"),
-      categoria: "Ativos",
-    },
-    {
-      id: "3",
-      titulo: "Conferência de Tecnologia",
-      subtitulo: "Organizado por TechEvents",
-      data: "12 AGO",
-      imagem: require("../assets/evento.jpg"),
-      categoria: "Concluídos",
-    },
-    {
-      id: "4",
-      titulo: "Workshop de Design",
-      subtitulo: "Organizado por Studio X",
-      data: "15 JUN",
-      imagem: require("../assets/evento.jpg"),
-      categoria: "Concluídos",
-    },
-    {
-      id: "5",
-      titulo: "Webinar sobre Startups",
-      subtitulo: "Organizado por StartUp Brazil",
-      data: "25 JUL",
-      imagem: require("../assets/evento.jpg"),
-      categoria: "Rascunhos",
-    },
-    {
-      id: "6",
-      titulo: "Seminário de Inovação",
-      subtitulo: "Organizado por Innovators",
-      data: "30 JUN",
-      imagem: require("../assets/evento.jpg"),
-      categoria: "Rascunhos",
-    },
-  ];
+  useEffect(() => {
+    const fetchEventos = async () => {
+      try {
+        const token = await AsyncStorage.getItem("userToken");
+        if (!token) {
+          navigation.navigate("Login");
+          return;
+        }
+
+        const response = await fetch("http://192.168.129.147:3000/eventos", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao buscar eventos");
+        }
+
+        const data = await response.json();
+
+        const eventosFormatados = data.map((evento) => ({
+          id: evento.eventoId.toString(),
+          titulo: evento.nomeEvento,
+          subtitulo: `Organizado por ${evento.Organizador.nome}`,
+          data: formatarData(evento.dataInicio),
+          imagem: require("../assets/evento.jpg"),
+          categoria: getCategoria(evento.statusEvento),
+        }));
+
+        setEventos(eventosFormatados);
+      } catch (error) {
+        console.error("Erro ao buscar eventos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEventos();
+  }, []);
+
+  const formatarData = (dataString) => {
+    const meses = [
+      "JAN",
+      "FEV",
+      "MAR",
+      "ABR",
+      "MAI",
+      "JUN",
+      "JUL",
+      "AGO",
+      "SET",
+      "OUT",
+      "NOV",
+      "DEZ",
+    ];
+    const data = new Date(dataString);
+    return `${data.getDate()} ${meses[data.getMonth()]}`;
+  };
+
+  const getCategoria = (status) => {
+    switch (status) {
+      case "CONCLUIDO":
+        return "Concluídos";
+      case "RASCUNHO":
+        return "Rascunhos";
+      default:
+        return "Ativos";
+    }
+  };
 
   const renderEvento = ({ item }) => (
     <TouchableOpacity
@@ -80,7 +105,22 @@ const HomeScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
-  const eventosFiltrados = eventos.filter((evento) => evento.categoria === selectedTab);
+  const eventosFiltrados = eventos.filter(
+    (evento) => evento.categoria === selectedTab
+  );
+
+  if (loading) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#1400B4" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -93,11 +133,18 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.searchContainer}>
-        <Feather name="search" size={20} color="#aaa" style={{ marginRight: 8 }} />
+        <Feather
+          name="search"
+          size={20}
+          color="#aaa"
+          style={{ marginRight: 8 }}
+        />
         <TextInput
           style={styles.searchInput}
           placeholder="Pesquise"
           placeholderTextColor="#aaa"
+          value={searchText}
+          onChangeText={setSearchText}
         />
       </View>
 
@@ -105,11 +152,17 @@ const HomeScreen = ({ navigation }) => {
         {["Ativos", "Concluídos", "Rascunhos"].map((tab) => (
           <TouchableOpacity
             key={tab}
-            style={[styles.tabButton, selectedTab === tab && styles.tabButtonActive]}
+            style={[
+              styles.tabButton,
+              selectedTab === tab && styles.tabButtonActive,
+            ]}
             onPress={() => setSelectedTab(tab)}
           >
             <Text
-              style={[styles.tabText, selectedTab === tab && styles.tabTextActive]}
+              style={[
+                styles.tabText,
+                selectedTab === tab && styles.tabTextActive,
+              ]}
             >
               {tab}
             </Text>
@@ -118,10 +171,19 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <FlatList
-        data={eventosFiltrados}
+        data={eventosFiltrados.filter(
+          (evento) =>
+            evento.titulo.toLowerCase().includes(searchText.toLowerCase()) ||
+            evento.subtitulo.toLowerCase().includes(searchText.toLowerCase())
+        )}
         keyExtractor={(item) => item.id}
         renderItem={renderEvento}
         contentContainerStyle={{ paddingBottom: 100 }}
+        ListEmptyComponent={
+          <Text style={{ color: "#fff", textAlign: "center", marginTop: 20 }}>
+            Nenhum evento encontrado
+          </Text>
+        }
       />
 
       <View style={styles.tabBar}>
@@ -129,30 +191,26 @@ const HomeScreen = ({ navigation }) => {
           name="home"
           size={24}
           color="#1400B4"
-          onPress={() => navigation.navigate("Home")} // Home
+          onPress={() => navigation.navigate("Home")}
         />
         <Feather
           name="message-circle"
           size={24}
           color="#fff"
-          onPress={() => navigation.navigate("Chat")} // Chat
+          onPress={() => navigation.navigate("Chat")}
         />
         <TouchableOpacity
           style={styles.centralButton}
-          onPress={() => navigation.navigate("Etapa1")} // Etapa1
+          onPress={() => navigation.navigate("Etapa1")}
         >
           <Feather name="plus" size={28} color="#fff" />
         </TouchableOpacity>
-        <AntDesign
-          name="barschart"
-          size={24}
-          color="#fff"
-        />
+        <AntDesign name="barschart" size={24} color="#fff" />
         <MaterialIcons
           name="person"
           size={24}
           color="#fff"
-          onPress={() => navigation.navigate("Perfil")} // Perfil
+          onPress={() => navigation.navigate("Perfil")}
         />
       </View>
     </View>
@@ -167,7 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   logo: {
-    width: 200, // 2x tamanho anterior
+    width: 200,
     height: 80,
   },
 
