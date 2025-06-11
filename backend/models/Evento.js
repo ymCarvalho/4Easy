@@ -28,38 +28,42 @@ const Evento = sequelize.define(
         key: "organizadorId",
       },
     },
-    NomeEvento: {
+    nomeEvento: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    DescEvento: {
+    descEvento: {
       type: DataTypes.STRING(500),
       allowNull: true,
     },
-    TipoEvento: {
+    tipoEvento: {
       type: DataTypes.STRING(50),
       allowNull: false,
       defaultValue: "Outro",
     },
-    PrivacidadeEvento: {
+    privacidadeEvento: {
       type: DataTypes.STRING(20),
       allowNull: false,
       defaultValue: "Público",
     },
-    DataInicio: {
+    dataInicio: {
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    HoraInicio: {
+    horaInicio: {
       type: DataTypes.TIME,
       allowNull: true,
     },
-    DataFim: {
+    dataFim: {
       type: DataTypes.DATEONLY,
       allowNull: true,
     },
-    HoraFim: {
+    horaFim: {
       type: DataTypes.TIME,
+      allowNull: true,
+    },
+    statusEvento: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },

@@ -9,33 +9,42 @@ import CarouselEvents from './CarouselEvents';
 import Rafael from '@images/team/Rafael.png';
 import Jorge from '@images/team/Jorge.png'
 import Leandro from '@images/team/Lele.png';
+import banner from '@images/placeholders/partyBanner.png';
+import Yasmin from '@images/team/Yasmin.png';
 import cellphone from '@images/placeholders/cellphone.png';
 import cellphone4easy from '@images/placeholders/cellPhone4easy.png';
 import money from '@images/placeholders/money.png';
 
 const events = [
   {
-    image: Rafael,
+    image: banner,
     alt: "Evento 1",
     nome: "Nome do Evento 1",
     local: "São Paulo",
     data: "sexta-feira, 12 de Fev às 20:00"
   },
   {
-    image: Jorge,
+    image: banner,
     alt: "Evento 1",
     nome: "Nome do Evento 2",
     local: "São Paulo",
     data: "sexta-feira, 12 de Fev às 20:00"
   },
   {
-    image: Leandro,
+    image: banner,
     alt: "Evento 1",
     nome: "Nome do Evento 3",
     local: "São Paulo",
     data: "sexta-feira, 12 de Fev às 20:00"
   },
-  // Adicione mais eventos conforme necessário
+  {
+    image: banner,
+    alt: "Evento 4",
+    nome: "Nome do Evento 4",
+    local: "São Paulo",
+    data: "sexta-feira, 12 de Fev às 20:00"
+  }
+
 ];
 
 export default function Home() {

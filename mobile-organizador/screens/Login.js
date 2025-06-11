@@ -51,8 +51,8 @@ export default function Login() {
 
     const endpoint =
       modo === "login"
-        ? "http://192.168.30.147:3000/login/organizador"
-        : "http://192.168.30.147:3000/cadastro/organizador";
+        ? "http://192.168.129.147:3000/login/organizador"
+        : "http://192.168.129.147.147:3000/cadastro/organizador";
 
     const dados = modo === "login" ? { email, senha } : { nome, email, senha };
 
@@ -118,10 +118,7 @@ export default function Login() {
           <View style={styles.card}>
             <View style={styles.tabContainer}>
               <TouchableOpacity
-                style={[
-                  styles.tab,
-                  modo === "login" && styles.activeTab,
-                ]}
+                style={[styles.tab, modo === "login" && styles.activeTab]}
                 onPress={() => setModo("login")}
               >
                 <Text
@@ -135,10 +132,7 @@ export default function Login() {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[
-                  styles.tab,
-                  modo === "cadastro" && styles.activeTab,
-                ]}
+                style={[styles.tab, modo === "cadastro" && styles.activeTab]}
                 onPress={() => setModo("cadastro")}
               >
                 <Text
