@@ -1,21 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { useFonts } from 'expo-font';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';n
 
 export default function Login() {
-  const [fontsLoaded] = useFonts({
-    'Montserrat-Regular': require('./assets/fonts/Montserrat-Regular.ttf'),
-    'Montserrat-SemiBold': require('./assets/fonts/Montserrat-SemiBold.ttf'),
-    'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf'),
-  });
+
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [errors, setErrors] = useState({});
 
-  if (!fontsLoaded) {
-    return <ActivityIndicator size="large" />;
-  }
 
   const validate = () => {
     const newErrors = {};

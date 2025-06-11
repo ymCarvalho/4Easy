@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -10,10 +11,10 @@ export default function Cadastro({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/logoComp.jpeg')} style={styles.logo} />
+      <Image source={require('../assets/Logo oficial.png')} style={styles.logo} />
 
       <View style={styles.tabContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Loginnpm')}>
           <Text style={styles.inactiveTab}>LOGIN</Text>
         </TouchableOpacity>
         <Text style={styles.activeTab}>CADASTRAR</Text>
@@ -28,7 +29,7 @@ export default function Cadastro({ navigation }) {
           value={nome}
           onChangeText={setNome}
         />
-      </View>
+      </View>p
 
       <View style={styles.inputContainer}>
         <MaterialIcons name="email" size={20} color="#888" style={styles.icon} />

@@ -1,15 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Image, PanResponder, Dimensions } from 'react-native';
-import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
-
 const screenWidth = Dimensions.get('window').width;
 
 export default function PagInicial() {
-  const [fontsLoaded] = useFonts({
-    Montserrat: require('./assets/fonts/Montserrat-Regular.ttf'),
-    'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf')
-  });
 
   const scrollRef1 = useRef();
   const scrollRef2 = useRef();
@@ -30,9 +23,6 @@ export default function PagInicial() {
     setX(event.nativeEvent.contentOffset.x);
   };
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
 
   return (
     <View style={styles.container}>
