@@ -66,7 +66,7 @@ export default function Etapa5({ navigation }) {
         ingressos: dadosEvento.ingressos,
       };
       const response = await axios.post(
-        "http://192.168.129.147:3000/eventos",
+        "http://192.168.150.148:3000/eventos",
         dadosParaEnviar,
         {
           headers: {

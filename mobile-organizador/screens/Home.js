@@ -27,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
           return;
         }
 
-        const response = await fetch("http://192.168.129.147:3000/eventos", {
+        const response = await fetch("http://192.168.150.148:3000/eventos", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
