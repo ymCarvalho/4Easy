@@ -51,8 +51,8 @@ export default function Login() {
 
     const endpoint =
       modo === "login"
-        ? "http://192.168.129.147:3000/login/organizador"
-        : "http://192.168.129.147.147:3000/cadastro/organizador";
+        ? "http://192.168.150.148:3000/login/organizador"
+        : "http://192.168.150.148:3000/cadastro/organizador";
 
     const dados = modo === "login" ? { email, senha } : { nome, email, senha };
 

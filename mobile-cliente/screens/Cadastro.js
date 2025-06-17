@@ -14,7 +14,7 @@ export default function Cadastro({ navigation }) {
       <Image source={require('../assets/Logo oficial.png')} style={styles.logo} />
 
       <View style={styles.tabContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Loginnpm')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.inactiveTab}>LOGIN</Text>
         </TouchableOpacity>
         <Text style={styles.activeTab}>CADASTRAR</Text>
