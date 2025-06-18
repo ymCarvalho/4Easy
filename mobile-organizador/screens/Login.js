@@ -22,6 +22,7 @@ import {
   Montserrat_600SemiBold,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
+import { API_URL } from "@env";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -51,8 +52,8 @@ export default function Login() {
 
     const endpoint =
       modo === "login"
-        ? "http://192.168.150.148:3000/login/organizador"
-        : "http://192.168.150.148:3000/cadastro/organizador";
+        ? `${API_URL}/login/organizador`
+        : `${API_URL}/cadastro/organizador`;
 
     const dados = modo === "login" ? { email, senha } : { nome, email, senha };
 
