@@ -7,6 +7,9 @@ import Perfil from "../screens/Perfil";
 import FiltragemAvancada from "../screens/FiltragemAvancanda";
 import ParticiparEvento from "../screens/ParticiparEvento";
 import PaginaPagamentos from "../screens/PaginaPagamentos";
+import PagInicial from "../screens/PagInicial";
+import EventosAbertos from "../screens/EventosAbertos";
+import MeusEventos from "../screens/MeusEventos";
 const Stack = createStackNavigator();
 
 const RootNavigator = () => {
@@ -14,7 +17,7 @@ const RootNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
-        initialRouteName="FiltragemAvancada"
+        initialRouteName="Login"
       >
         <Stack.Screen name="Login" component={Login}></Stack.Screen>
         <Stack.Screen name="Cadastro" component={Cadastro}></Stack.Screen>
@@ -23,6 +26,9 @@ const RootNavigator = () => {
         <Stack.Screen name="FiltragemAvancada" component={FiltragemAvancada}></Stack.Screen>
         <Stack.Screen name="ParticiparEvento" component={ParticiparEvento}></Stack.Screen>
         <Stack.Screen name="PaginaPagamentos" component={PaginaPagamentos}></Stack.Screen>
+        <Stack.Screen name="PagInicial" component={PagInicial}></Stack.Screen>
+        <Stack.Screen name="EventosAbertos" component={EventosAbertos}></Stack.Screen>
+        <Stack.Screen name="MeusEventos" component={MeusEventos}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
