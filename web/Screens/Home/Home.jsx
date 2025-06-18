@@ -54,6 +54,15 @@ export default function Home() {
   const proxima = () => {
  
      navigate('/AboutUs');
+
+     
+  }
+  
+  const info = () => {
+ 
+     navigate('InfoPage');
+
+     
   };
 
   return (
@@ -107,7 +116,7 @@ export default function Home() {
 
             <div className={styles.actionButtons}>
               <button onClick={proxima} className={styles.actionButton}>Sobre nós</button>
-              <button className={styles.actionButton}>Veja como funciona</button>
+              <button onClick={info}className={styles.actionButton}>Veja como funciona</button>
             </div>
 
           </div>
