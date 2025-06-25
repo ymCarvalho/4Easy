@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from './Header.module.css';
 import LogoOficial from '@images/logos/LogoOficial.png';
@@ -9,40 +9,35 @@ export default function Header() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
- 
   const [isScrolled, setIsScrolled] = useState(() => {
-    if (isHomePage) {
-  
-      return typeof window !== 'undefined' ? window.scrollY > 50 : false;
-    }
-
-    return true;
+    return isHomePage ? (typeof window !== 'undefined' ? window.scrollY > 50 : false) : true;
   });
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const headerRef = useRef(null);
+  const searchInputRef = useRef(null);
+  const bodyRef = useRef(document.body);
 
+  // Efeito de scroll para header
   useEffect(() => {
     if (isHomePage) {
       const handleScroll = () => {
-        setIsScrolled(window.scrollY > 50);
+        const shouldScrolled = window.scrollY > 50;
+        if (shouldScrolled !== isScrolled) {
+          setIsScrolled(shouldScrolled);
+        }
       };
 
-     
-      handleScroll();
-      
-      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('scroll', handleScroll, { passive: true });
       return () => window.removeEventListener('scroll', handleScroll);
     }
+  }, [isHomePage, isScrolled]);
 
-  }, [isHomePage]);
-
-  const loginButton = () => navigate('/paginaLogin');
-  const CadastroButton = () => navigate('/pageCadastro');
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
-  // Fechar o menu quando clicar fora
+  // Fechar menu quando clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isMenuOpen && !event.target.closest(`.${styles.menuButton}, .${styles.menuDropdown}`)) {
+      if (isMenuOpen && headerRef.current && !headerRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
     };
@@ -51,58 +46,128 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMenuOpen]);
 
-  // Bloqueio do scroll quando o menu está aberto
-useEffect(() => {
-  const originalStyle = window.getComputedStyle(document.body).overflow;
-  const originalPosition = window.getComputedStyle(document.body).position;
-  const scrollY = window.scrollY;
-  
-  if (isMenuOpen) {
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = '100%';
-  }
+  // Controle do scroll quando o menu está aberto
+  useEffect(() => {
+    if (isMenuOpen) {
+      // Guarda a posição atual do scroll
+      const currentScroll = window.scrollY;
+      setScrollPosition(currentScroll);
+      
+      // Aplica estilos para congelar a posição
+      bodyRef.current.style.position = 'fixed';
+      bodyRef.current.style.top = `-${currentScroll}px`;
+      bodyRef.current.style.left = '0';
+      bodyRef.current.style.right = '0';
+      bodyRef.current.style.overflow = 'hidden';
+      
+      // Adiciona padding-right para compensar a barra de scroll desaparecida
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      bodyRef.current.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      // Remove os estilos
+      bodyRef.current.style.position = '';
+      bodyRef.current.style.top = '';
+      bodyRef.current.style.left = '';
+      bodyRef.current.style.right = '';
+      bodyRef.current.style.overflow = '';
+      bodyRef.current.style.paddingRight = '';
+      
+      // Restaura o scroll
+      window.scrollTo(0, scrollPosition);
+    }
 
-  return () => {
-    document.body.style.overflow = originalStyle;
-    document.body.style.position = originalPosition;
-    document.body.style.top = '';
-    document.body.style.width = '';
-    window.scrollTo(0, parseInt(scrollY || '0'));
+    return () => {
+      // Limpeza
+      bodyRef.current.style.position = '';
+      bodyRef.current.style.top = '';
+      bodyRef.current.style.left = '';
+      bodyRef.current.style.right = '';
+      bodyRef.current.style.overflow = '';
+      bodyRef.current.style.paddingRight = '';
+    };
+  }, [isMenuOpen, scrollPosition]);
+
+  // Focar no input de busca quando a barra de pesquisa é exibida
+  useEffect(() => {
+    if (isScrolled && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isScrolled]);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
+    }
   };
-}, [isMenuOpen]);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const navigateTo = (path) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
 
   return (
     <>
-       <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''} ${isMenuOpen ? styles.menuOpen : ''}`}>  
+      <header
+        ref={headerRef}
+        className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}
+      >
         <div className={styles.headerContent}>
+          {/* Logo Section */}
           <div className={styles.logoContainer}>
-            <Link to="/">
+            <Link to="/" className={styles.logoLink}>
               <img
                 src={isScrolled ? LogoOficial : LogoCompleta}
                 alt="Logo 4Easy"
-                className={styles.logo} />
-            </Link> 
-            {!isScrolled && <p>Seu evento, do jeito que você imagina.</p>}
+                className={styles.logo}
+                loading="eager"
+              />
+              {!isScrolled && (
+                <p className={styles.tagline}>Seu evento, do jeito que você imagina.</p>
+              )}
+            </Link>
           </div>
 
-          {/* Barra de pesquisa (modo compacto) */}
+          {/* Search Bar (Visible when scrolled) */}
           {isScrolled && (
-            <div className={styles.searchContainer}>
-              <div className={styles.searchBar}>
-                <svg className={styles.searchIcon} viewBox="0 0 24 24">
-                  <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                </svg>
+            <form onSubmit={handleSearchSubmit} className={styles.searchContainer}>
+              <div className={`${styles.searchBar} ${isSearchFocused ? styles.focused : ''}`}>
+                <button type="submit" className={styles.searchButton}>
+                  <svg className={styles.searchIcon} viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                  </svg>
+                </button>
                 <input
+                  ref={searchInputRef}
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Pesquisar eventos..."
-                  className={styles.searchInput} />
+                  className={styles.searchInput}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setIsSearchFocused(false)}
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className={styles.clearSearchButton}
+                    onClick={() => setSearchQuery('')}
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18">
+                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
+                  </button>
+                )}
               </div>
-            </div>
+            </form>
           )}
 
-          {/* Menu direito */}
+          {/* Right Section */}
           <div className={styles.rightSection}>
             <div className={styles.rightAboveSection}>
               {isScrolled && (
@@ -123,33 +188,66 @@ useEffect(() => {
               )}
 
               <div className={styles.authButtons}>
-                <button onClick={loginButton} className={styles.loginButton}>LOGIN</button>
-                <button onClick={CadastroButton} className={styles.registerButton}>CADASTRE-SE</button>
+                <button
+                  onClick={() => navigate('/paginaLogin')}
+                  className={styles.loginButton}
+                >
+                  LOGIN
+                </button>
+                <button
+                  onClick={() => navigate('/pageCadastro')}
+                  className={styles.registerButton}
+                >
+                  CADASTRE-SE
+                </button>
               </div>
 
-              <button onClick={toggleMenu} className={styles.menuButton}>
-                <div className={styles.menuIcon}></div>
-                <div className={styles.menuIcon}></div>
-                <div className={styles.menuIcon}></div>
+              <button
+                onClick={toggleMenu}
+                className={`${styles.menuButton} ${isMenuOpen ? styles.open : ''}`}
+                aria-label="Menu"
+                aria-expanded={isMenuOpen}
+              >
+                <span className={styles.menuLine}></span>
+                <span className={styles.menuLine}></span>
+                <span className={styles.menuLine}></span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Barra de pesquisa completa (apenas quando não scrolled) */}
+        {/* Full Search Bar (Visible when not scrolled) */}
         {!isScrolled && (
-          <>
-            <div className={styles.fullSearchContainer}>
-              <div className={styles.searchBar}>
-                <svg className={styles.searchIcon} viewBox="0 0 24 24">
-                  <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                </svg>
+          <div className={styles.fullSearchSection}>
+            <form onSubmit={handleSearchSubmit} className={styles.fullSearchContainer}>
+              <div className={`${styles.searchBar} ${isSearchFocused ? styles.focused : ''}`}>
+                <button type="submit" className={styles.searchButton}>
+                  <svg className={styles.searchIcon} viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                  </svg>
+                </button>
                 <input
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Pesquisar eventos, categorias, produtores..."
-                  className={styles.searchInput} />
+                  className={styles.searchInput}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setIsSearchFocused(false)}
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className={styles.clearSearchButton}
+                    onClick={() => setSearchQuery('')}
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18">
+                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
+                  </button>
+                )}
               </div>
-            </div>
+            </form>
 
             <div className={styles.locationBarContainer}>
               <div className={styles.locationDropdownRow}>
@@ -167,38 +265,81 @@ useEffect(() => {
                     <path d="M7 10l5 5 5-5z" />
                   </svg>
                 </div>
-
-                {/* Aqui você pode adicionar outros filtros no futuro */}
               </div>
             </div>
-          </>
+          </div>
         )}
       </header>
-      
-      {/* Menu Dropdown Centralizado */}
+
+      {/* Overlay Menu */}
       {isMenuOpen && (
-        
-        <div className={styles.menuDropdown}>
-          <div className={styles.menuContent}>
-            <h3 className={styles.menuTitle}>Menu</h3>
-            <ul className={styles.menuItems}>
-              <li className={styles.menuItem} onClick={() => navigate('/')}>Home</li>
-              <li className={styles.menuItem} onClick={() => navigate('/eventos')}>Eventos</li>
-              <li className={styles.menuItem} onClick={() => navigate('/categorias')}>Categorias</li>
-              <li className={styles.menuItem} onClick={() => navigate('/aboutus')}>Sobre Nós</li>
-              <li className={styles.menuItem} onClick={() => navigate('/contato')}>Contato</li>
-            </ul>
-            <div className={styles.menuAuthButtons}>        
-              <button onClick={loginButton} className={styles.menuLoginButton}>Login</button>
-              <button onClick={CadastroButton} className={styles.menuRegisterButton}>Cadastre-se</button>
+        <>
+          <div
+            className={styles.menuOverlay}
+            onClick={() => setIsMenuOpen(false)}
+            style={{ top: `${scrollPosition}px`, height: `calc(100vh + ${scrollPosition}px)` }}
+            aria-hidden="true"
+          />
+          <div
+            className={`${styles.menuDropdown} ${isMenuOpen ? styles.open : ''}`}
+            style={{ top: `${scrollPosition}px`, height: `calc(100vh - ${scrollPosition}px)` }}
+          >
+            <div className={styles.menuContent}>
+              <h3 className={styles.menuTitle}>Menu</h3>
+              <ul className={styles.menuItems}>
+                <li className={styles.menuItem} onClick={() => navigateTo('/')}>
+                  <span>Home</span>
+                  <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                  </svg>
+                </li>
+                <li className={styles.menuItem} onClick={() => navigateTo('/eventos')}>
+                  <span>Eventos</span>
+                  <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
+                  </svg>
+                </li>
+                <li className={styles.menuItem} onClick={() => navigateTo('/categorias')}>
+                  <span>Categorias</span>
+                  <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M12 2l-5.5 9h11z" />
+                    <circle cx="17.5" cy="17.5" r="4.5" />
+                    <path d="M3 13.5h8v8H3z" />
+                  </svg>
+                </li>
+                <li className={styles.menuItem} onClick={() => navigateTo('/aboutus')}>
+                  <span>Sobre Nós</span>
+                  <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                  </svg>
+                </li>
+                <li className={styles.menuItem} onClick={() => navigateTo('/contato')}>
+                  <span>Contato</span>
+                  <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                  </svg>
+                </li>
+              </ul>
+              <div className={styles.menuAuthButtons}>
+                <button
+                  onClick={() => navigateTo('/paginaLogin')}
+                  className={styles.menuLoginButton}
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => navigateTo('/pageCadastro')}
+                  className={styles.menuRegisterButton}
+                >
+                  Cadastre-se
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
 
-      
-      
-      <div className="header-spacer" />
+      <div className={styles.headerSpacer} />
     </>
   );
 }

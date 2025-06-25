@@ -1,30 +1,25 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-/**
- * Componente que rola a página para o topo sempre que a rota muda
- * @component
- * @example
- * return (
- *   <Router>
- *     <ScrollToTop />
- *     <Routes>...</Routes>
- *   </Router>
- * )
- */
 export default function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Rolagem instantânea para o topo
-    window.scrollTo(0, 0);
+    // Verifica se há um estado de scroll position guardado
+    const savedPosition = sessionStorage.getItem('scrollPosition');
     
-    // Alternativa para rolagem suave (descomente se preferir):
-    // window.scrollTo({
-    //   top: 0,
-    //   behavior: 'smooth'
-    // });
-  }, [pathname]); // Executa sempre que o pathname mudar
+    if (savedPosition && pathname === sessionStorage.getItem('lastPath')) {
+      // Restaura a posição se for a mesma rota (caso do menu mobile)
+      window.scrollTo(0, parseInt(savedPosition));
+    } else {
+      // Rolagem para o topo apenas em mudanças de rota normais
+      window.scrollTo(0, 0);
+    }
 
-  return null; // Este componente não renderiza nada visível
+    // Limpa os valores armazenados após uso
+    sessionStorage.removeItem('scrollPosition');
+    sessionStorage.removeItem('lastPath');
+  }, [pathname]);
+
+  return null;
 }
