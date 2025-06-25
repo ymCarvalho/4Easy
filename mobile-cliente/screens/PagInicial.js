@@ -19,6 +19,7 @@ const mockCards = Array.from({ length: 10 });
 
 /* ---------------------- TELA INICIAL -------------------- */
 export default function PaginaInicial({ navigation }) {
+  const [searchTerm, setSearchTerm] = React.useState('');
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       {/* Cabeçalho ------------------------------------------------ */}
@@ -28,7 +29,7 @@ export default function PaginaInicial({ navigation }) {
           style={styles.logo}
           resizeMode="contain"
         />
-        <Icon name="account-circle-outline" size={36} color="#4B4BE0" onPress={() => navigation.navigate('Perfil')}/>
+        <Icon name="account-circle-outline" size={36} color="#4B4BE0" onPress={() => navigation.navigate('Perfil')} />
       </View>
 
       {/* Barra de pesquisa -------------------------------------- */}
@@ -37,6 +38,14 @@ export default function PaginaInicial({ navigation }) {
           placeholder="Buscar eventos..."
           placeholderTextColor="#666"
           style={styles.searchInput}
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+          onSubmitEditing={() => {
+            if (searchTerm.trim()) {
+              navigation.navigate('Pesquisa', { termo: searchTerm.trim() });
+              setSearchTerm('');
+            }
+          }}
         />
         <Icon name="magnify" size={24} color="#666" style={styles.searchIcon} />
       </View>

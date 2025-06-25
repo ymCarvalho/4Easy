@@ -10,6 +10,7 @@ import PaginaPagamentos from "../screens/PaginaPagamentos";
 import PagInicial from "../screens/PagInicial";
 import EventosAbertos from "../screens/EventosAbertos";
 import MeusEventos from "../screens/MeusEventos";
+import Pesquisa from "../screens/Pesquisa";
 const Stack = createStackNavigator();
 
 const RootNavigator = () => {
@@ -29,6 +30,7 @@ const RootNavigator = () => {
         <Stack.Screen name="PagInicial" component={PagInicial}></Stack.Screen>
         <Stack.Screen name="EventosAbertos" component={EventosAbertos}></Stack.Screen>
         <Stack.Screen name="MeusEventos" component={MeusEventos}></Stack.Screen>
+        <Stack.Screen name="Pesquisa" component={Pesquisa}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
