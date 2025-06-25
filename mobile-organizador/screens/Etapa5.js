@@ -11,6 +11,7 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@env";
 
 export default function Etapa5({ navigation }) {
   const [dadosEvento, setDadosEvento] = useState(null);
@@ -65,15 +66,11 @@ export default function Etapa5({ navigation }) {
         fotos: dadosEvento.fotos,
         ingressos: dadosEvento.ingressos,
       };
-      const response = await axios.post(
-        "http://192.168.150.148:3000/eventos",
-        dadosParaEnviar,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${API_URL}/eventos`, dadosParaEnviar, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       Alert.alert("Sucesso!", "Evento criado com sucesso!", [
         {
           text: "OK",

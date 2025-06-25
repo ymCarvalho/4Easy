@@ -5,7 +5,6 @@ const cors = require("cors");
 const sequelize = require("./db");
 const jwt = require("jsonwebtoken");
 
-const Convidado = require("./models/Convidado");
 const Organizador = require("./models/Organizador");
 const Evento = require("./models/Evento");
 const Localizacao = require("./models/Localizacao");
@@ -190,7 +189,7 @@ app.get("/eventos", autenticar, async (req, res) => {
         },
         {
           model: Organizador,
-          attributes: ["nome"], 
+          attributes: ["nome"],
         },
       ],
       order: [["dataInicio", "ASC"]],

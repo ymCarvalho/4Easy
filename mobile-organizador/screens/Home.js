@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Feather, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@env";
 
 const HomeScreen = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState("Ativos");
@@ -27,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
           return;
         }
 
-        const response = await fetch("http://192.168.150.148:3000/eventos", {
+        const response = await fetch(`${API_URL}/eventos`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
