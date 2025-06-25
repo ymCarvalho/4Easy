@@ -71,7 +71,7 @@ const events = [
     local: "São Paulo",
     data: "sexta-feira, 12 de Fev às 20:00"
   },
-  
+
 
 ];
 
@@ -80,76 +80,76 @@ export default function Home() {
   const navigate = useNavigate();
 
   const proxima = () => {
- 
-     navigate('/AboutUs');
 
-     
+    navigate('/AboutUs');
+
+
   }
-  
-  const info = () => {
- 
-     navigate('InfoPage');
 
-     
+  const info = () => {
+
+    navigate('InfoPage');
+
+
   };
 
   return (
-
-
     <>
+      
       <Header />
 
       <section className={styles.eventsSection}>
-            
-          <CarouselEvents events={events} />
-        </section>
 
-        <div className={styles.secondPart}>
-          <div className={styles.carouselWrapper}>
+        <CarouselEvents events={events} />
+      </section>
+
+      <div className={styles.secondPart}>
+        <div className={styles.carouselWrapper}>
           <CarouselColecao />
         </div>
 
         <div className={styles.carouselWrapper}>
           <CarouselElements />
         </div>
-        
-        
-        </div>
-       
-          <div className={styles.featureSection}>
+
+
+
+
+        <div className={styles.featureSection}>
           <div className={styles.featureContent}>
             <h1 className={styles.mainTitle}>Seu evento, do jeito <br /> que você imagina.</h1>
             <h2 className={styles.subTitle}>Baixe o app e crie</h2>
-            
+
             <div className={styles.featureBoxes}>
               <div className={styles.featureBox}>
                 <img src={cellphone} alt="Celular" className={styles.featureIcon} />
                 <p className={styles.featureText}>Com apenas <b>alguns cliques</b></p>
               </div>
-              
+
               <div className={styles.featureBox}>
                 <img src={money} alt="Dinheiro" className={styles.featureIcon} />
                 <p className={styles.featureText}>Crie seu evento <b>gratuitamente!</b> </p>
               </div>
             </div>
 
-            
+
           </div>
-          
-            <div className="featureContent2">
-                <div className={styles.featureBox}>
-                <img src={cellphone4easy} alt="Celular" className={styles.featureIcon2} />
-                
-              </div>
+
+          <div className="featureContent2">
+            <div className={styles.featureBox}>
+              <img src={cellphone4easy} alt="Celular" className={styles.featureIcon2} />
+
+            </div>
 
             <div className={styles.actionButtons}>
               <button onClick={proxima} className={styles.actionButton}>Sobre nós</button>
-              <button onClick={info}className={styles.actionButton}>Veja como funciona</button>
+              <button onClick={info} className={styles.actionButton}>Veja como funciona</button>
             </div>
 
           </div>
         </div>
-      
+      </div>
+
       <Footer />
     </>
 
