@@ -23,6 +23,8 @@ import {
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
 import { API_URL } from "@env";
+import fundoImg from "../assets/fundo.png";
+import logoImg from "../assets/roxa.png";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -103,17 +105,13 @@ export default function Login() {
       style={{ flex: 1 }}
     >
       <ImageBackground
-        source={require("../assets/fundo.png")}
+        source={fundoImg}
         style={styles.background}
         resizeMode="cover"
       >
         <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.header}>
-            <Image
-              source={require("../assets/roxa.png")}
-              style={styles.logo}
-              resizeMode="contain"
-            />
+            <Image source={logoImg} style={styles.logo} resizeMode="contain" />
           </View>
 
           <View style={styles.card}>

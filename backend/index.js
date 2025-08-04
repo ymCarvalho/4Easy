@@ -10,6 +10,8 @@ const Evento = require("./models/Evento");
 const Localizacao = require("./models/Localizacao");
 const Midia = require("./models/Midia");
 const Ingresso = require("./models/Ingresso");
+const Convidado = require("./models/Convidado");
+
 app.use(cors());
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
@@ -202,8 +204,135 @@ app.get("/eventos", autenticar, async (req, res) => {
   }
 });
 
-sequelize.sync().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta: ${PORT}`);
-  });
+
+//parte cliente
+app.post("/cadastro/convidado", async (req, res) => {
+  console.log("Requisição recebida no backend:", req.body);
+
+  try {
+    const { cpf, email } = req.body;
+
+    if (!cpf || !email) {
+      return res.status(400).json({
+        success: false,
+        message: "CPF e email são obrigatórios",
+      });
+    }
+
+    const cpfExistente = await Convidado.findOne({
+      where: { cpf: cpf.replace(/\D/g, "") },
+    });
+    if (cpfExistente) {
+      return res.status(400).json({
+        success: false,
+        message: "CPF já cadastrado",
+      });
+    }
+
+    const emailExistente = await Convidado.findOne({ where: { email } });
+    if (emailExistente) {
+      return res.status(400).json({
+        success: false,
+        message: "Email já cadastrado",
+      });
+    }
+    const novoConvidado = await Convidado.create({
+      nome: req.body.nome,
+      cpf: req.body.cpf.replace(/\D/g, ""),
+      email: req.body.email,
+      senha: req.body.senha,
+      telefone: req.body.telefone.replace(/\D/g, ""),
+      genero: req.body.genero,
+      dataNascimento: req.body.dataNascimento,
+      endereco: req.body.endereco,
+      cidade: req.body.cidade,
+      cep: req.body.cep.replace(/\D/g, ""),
+    });
+    const convidadoResponse = novoConvidado.toJSON();
+    delete convidadoResponse.senha;
+
+    res.status(201).json({
+      success: true,
+      message: "Cadastro realizado com sucesso",
+      data: convidadoResponse,
+    });
+  } catch (error) {
+    console.error("Erro no cadastro:", error);
+
+    let mensagem = "Erro ao cadastrar convidado";
+    if (error.name === "SequelizeValidationError") {
+      mensagem = error.errors.map((e) => e.message).join(", ");
+    } else if (error.name === "SequelizeUniqueConstraintError") {
+      mensagem = "Dados duplicados (CPF ou email já existem)";
+    }
+
+    res.status(500).json({
+      success: false,
+      message: mensagem,
+      error: error.message,
+    });
+  }
 });
+
+app.post("/login/convidado", async (req, res) => {
+  const { email, senha } = req.body;
+
+  try {
+    const convidado = await Convidado.findOne({
+      where: { email },
+      attributes: ["convidadoId", "nome", "email", "senha", "cpf"],
+    });
+
+    if (!convidado) {
+      return res.status(401).json({
+        success: false,
+        message: "E-mail não cadastrado",
+      });
+    }
+
+    if (convidado.senha !== senha) {
+      return res.status(401).json({
+        success: false,
+        message: "Senha incorreta",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: convidado.convidadoId,
+        tipo: "convidado",
+      },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    const convidadoResponse = convidado.toJSON();
+    delete convidadoResponse.senha;
+
+    res.status(200).json({
+      success: true,
+      message: "Login realizado com sucesso",
+      token,
+      convidado: convidadoResponse,
+    });
+  } catch (error) {
+    console.error("Erro no login:", error);
+    res.status(500).json({
+      success: false,
+      message: "Erro ao processar login",
+      error: error.message,
+    });
+  }
+});
+
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("Modelos sincronizados com o banco de dados");
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando na porta: ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Erro ao sincronizar modelos:", err);
+  });
