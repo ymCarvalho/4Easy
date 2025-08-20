@@ -29,6 +29,7 @@ CREATE TABLE Evento (
     data DATE,
     valor DECIMAL(10, 2),
     descricaoEvento TEXT,
+    categoriaEvento TEXT,
     avaliacaoEvento TEXT,
     valorPatrocinio DECIMAL(10),
     prioridadeEvento INT DEFAULT 0,
